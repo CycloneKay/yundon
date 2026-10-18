@@ -1,0 +1,11 @@
+{
+  "appId": "com.cyclonekay.fitness12w",
+  "appName": "12周计划",
+  "webDir": "www",
+  "android": {
+    "allowMixedContent": false
+  },
+  "server": {
+    "androidScheme": "https"
+  }
+}

@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
+<base href="./">
+<meta name="theme-color" content="#1F3A5F">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="12周计划">
+<link rel="icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAYAAABS3GwHAAAEFUlEQVR42u3du3EbMRhFYQCjIpxJdUgRK5HacAVuw6xEkVmHmbkLOfKMA4nPJRfA/U7qpUYG7sGPx0KspTMen18/CqZlv9vWnn6fKuxIlqIKPZJlqIKPZBGq4CNZhCr4SBahCj6SRWjCj5FYOmNV8JFcDZrwI7kaNOFHsgRN+JEsQRN+JEvQhB/JEjThR7IETfiRLEETfiRL0IQfyRI0zYRkmtEfyVWgCT+SJTAFgimQ0R+pVUAFgApg9EdqFVABoAIY/ZFaBVQAqABGf6RWARUAKgAQLYDpD1KnQSoAVACAAAABgCyqBTBUAIAAAAEAAgAEAAgAEAAgAEAAgAAAAQACAAQACAAQACAAQACAAAABgK556OGX+P3r50nPPb286bFBGKVPV70Uf2ojEWG+4PfSp220hrr2s9Cn1gDAmgIsYbsqMM/ov2afqgBQAQACAAQACAAUJ8FlqB2I9/L1ActGN2vbaSvAoQ769+/HnkFu27aZO+jSZ5HTttYAsAgGCAAQACAAQACAAAABgOJViOLSBlQAgAAAAQACAAQACAAQACAAQACAAAABAAIABAAIABAAKO4D3B/fLVbcnVABAAIABAAIAAIABAAIABCgDLSvv7nFs8hpWxUAKsDMI9XTy9vG6K9ty8yvQgi4tjUFAggAEAAgAEAAoEcBlriY4nJLme6y0Rp92tzsQnKfttH+w8I/X4jX7NP6+Pz6UQa5fyr8Zbo7xWv3aRcCAHaBAAIABAAIABAAIABAAIAAOMyfH1UjECA7/CQgQPzITwICxE97SECA+Dk/CQgQv+AlAQHid3tIQID4rU4SECB+n58EBIg/5CIBAaJPeL99dwGQAMIPAgg/CCD8BIDwEwCd7KYIPwFiXz0WfgLEvnos/ASIffVY+AkwxavHlwRZ+Akw1YL3Vs8KPwGG2e055TPCT4CptzoPfVb4CRCxz//ZzxB+AkQdcv3/s4S/P3xBxoDvzQu/ChAbMuEnQGzYhJ8Aq4Suh+AJPwFiAyj8BIiVQPgJECuB8BMgVgLhJ0CsBMJ/RwH2u62/lNRRUIX/fux326oCdBRY4TcFij0rEH4CxFYD4SdArATC34EAFsLrSCD86y6ASynlQVPcVoLPXqsW/H4ggAMtUyDTICROfyyCoQJ8ZQYw++ivAkAFOGYIMOvorwJABTjVFGC20V8FgApwrjHALKP/0QpAAswcflMgmAJdaxAw6uh/cgUgAWYM/1lTIBJgtvCfvQYgAWYK/0WLYBJglvBfvAtEAswQ/qu2QUmA0cN/9TkACTBy+Bc5CCMBRg1/KaUsGl5fuIdRgn+TVyFUA4wU/sUrgGqAUYJ/cwGIgBFmFXebshABPU6n7z5nJwJ6WkeuumglA9bePOlu14YUwn5P/gK9BtJyZzKnFgAAAABJRU5ErkJggg==">
+<link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAYAAABS3GwHAAAEFUlEQVR42u3du3EbMRhFYQCjIpxJdUgRK5HacAVuw6xEkVmHmbkLOfKMA4nPJRfA/U7qpUYG7sGPx0KspTMen18/CqZlv9vWnn6fKuxIlqIKPZJlqIKPZBGq4CNZhCr4SBahCj6SRWjCj5FYOmNV8JFcDZrwI7kaNOFHsgRN+JEsQRN+JEvQhB/JEjThR7IETfiRLEETfiRL0IQfyRI0zYRkmtEfyVWgCT+SJTAFgimQ0R+pVUAFgApg9EdqFVABoAIY/ZFaBVQAqABGf6RWARUAKgAQLYDpD1KnQSoAVACAAAABgCyqBTBUAIAAAAEAAgAEAAgAEAAgAEAAgAAAAQACAAQACAAQACAAQACAAAABgK556OGX+P3r50nPPb286bFBGKVPV70Uf2ojEWG+4PfSp220hrr2s9Cn1gDAmgIsYbsqMM/ov2afqgBQAQACAAQACAAUJ8FlqB2I9/L1ActGN2vbaSvAoQ769+/HnkFu27aZO+jSZ5HTttYAsAgGCAAQACAAQACAAAABgOJViOLSBlQAgAAAAQACAAQACAAQACAAQACAAAABAAIABAAIABAAKO4D3B/fLVbcnVABAAIABAAIAAIABAAIABCgDLSvv7nFs8hpWxUAKsDMI9XTy9vG6K9ty8yvQgi4tjUFAggAEAAgAEAAoEcBlriY4nJLme6y0Rp92tzsQnKfttH+w8I/X4jX7NP6+Pz6UQa5fyr8Zbo7xWv3aRcCAHaBAAIABAAIABAAIABAAIAAOMyfH1UjECA7/CQgQPzITwICxE97SECA+Dk/CQgQv+AlAQHid3tIQID4rU4SECB+n58EBIg/5CIBAaJPeL99dwGQAMIPAgg/CCD8BIDwEwCd7KYIPwFiXz0WfgLEvnos/ASIffVY+AkwxavHlwRZ+Akw1YL3Vs8KPwGG2e055TPCT4CptzoPfVb4CRCxz//ZzxB+AkQdcv3/s4S/P3xBxoDvzQu/ChAbMuEnQGzYhJ8Aq4Suh+AJPwFiAyj8BIiVQPgJECuB8BMgVgLhJ0CsBMJ/RwH2u62/lNRRUIX/fux326oCdBRY4TcFij0rEH4CxFYD4SdArATC34EAFsLrSCD86y6ASynlQVPcVoLPXqsW/H4ggAMtUyDTICROfyyCoQJ8ZQYw++ivAkAFOGYIMOvorwJABTjVFGC20V8FgApwrjHALKP/0QpAAswcflMgmAJdaxAw6uh/cgUgAWYM/1lTIBJgtvCfvQYgAWYK/0WLYBJglvBfvAtEAswQ/qu2QUmA0cN/9TkACTBy+Bc5CCMBRg1/KaUsGl5fuIdRgn+TVyFUA4wU/sUrgGqAUYJ/cwGIgBFmFXebshABPU6n7z5nJwJ6WkeuumglA9bePOlu14YUwn5P/gK9BtJyZzKnFgAAAABJRU5ErkJggg==">
+<link rel="manifest" href="data:application/manifest+json;base64,eyJuYW1lIjoiMTLlkajlop7ogozorqHliJIiLCJzaG9ydF9uYW1lIjoiMTLlkajorqHliJIiLCJkZXNjcmlwdGlvbiI6IjEyIOWRqOWinuiCjOS4juS9k+aAgemHjeW7uuiuree7g+WNle+8jOaUr+aMgeaJk+WLvuiusOW9leS4jui/m+W6pui/vei4quOAgiIsInN0YXJ0X3VybCI6Ii4iLCJzY29wZSI6Ii4iLCJkaXNwbGF5Ijoic3RhbmRhbG9uZSIsIm9yaWVudGF0aW9uIjoicG9ydHJhaXQiLCJiYWNrZ3JvdW5kX2NvbG9yIjoiI0VFRjJGNyIsInRoZW1lX2NvbG9yIjoiIzFGM0E1RiIsImxhbmciOiJ6aC1DTiIsImljb25zIjpbeyJzcmMiOiJkYXRhOmltYWdlL3BuZztiYXNlNjQsaVZCT1J3MEtHZ29BQUFBTlNVaEVVZ0FBQU1BQUFBREFDQVlBQUFCUzNHd0hBQUFFRlVsRVFWUjQydTNkdTNFYk1SaEZZUUNqSXB4SmRVZ1JLNUhhY0FWdXc2eEVrVm1IbWJrTE9mS01BNG5QSlJmQS9VN3FwVVlHN3NHUHgwS3NwVE1lbjE4L0NxWmx2OXZXbm42Zkt1eElscUlLUFpKbHFJS1BaQkdxNENOWmhDcjRTQmFoQ2o2U1JXakNqNUZZT21OVjhKRmNEWnJ3STdrYU5PRkhzZ1JOK0pFc1FSTitKRXZRaEIvSkVqVGhSN0lFVGZpUkxFRVRmaVJMMElRZnlSSTB6WVJrbXRFZnlWV2dDVCtTSlRBRmdpbVEwUitwVlVBRmdBcGc5RWRxRlZBQm9BSVkvWkZhQlZRQXFBQkdmNlJXQVJVQUtnQVFMWURwRDFLblFTb0FWQUNBQUFBQmdDeXFCVEJVQUlBQUFBRUFBZ0FFQUFnQUVBQWdBRUFBZ0FBQUFRQUNBQVFBQ0FBUUFDQUFRQUNBQUFBQmdLNTU2T0dYK1AzcjUwblBQYjI4NmJGQkdLVlBWNzBVZjJvakVXRys0UGZTcDIyMGhycjJzOUNuMWdEQW1nSXNZYnNxTU0vb3YyYWZxZ0JRQVFBQ0FBUUFDQUFVSjhGbHFCMkk5L0wxQWN0R04ydmJhU3ZBb1E3NjkrL0hua0Z1MjdhWk8ralNaNUhUdHRZQXNBZ0dDQUFRQUNBQVFBQ0FBQUFCZ09KVmlPTFNCbFFBZ0FBQUFRQUNBQVFBQ0FBUUFDQUFRQUNBQUFBQkFBSUFCQUFJQUJBQUtPNEQzQi9mTFZiY25WQUJBQUlBQkFBSUFBSUFCQUFJQUJDZ0RMU3Z2N25GczhocFd4VUFLc0RNSTlYVHk5dkc2Szl0eTh5dlFnaTR0alVGQWdnQUVBQWdBRUFBb0VjQmxyaVk0bkpMbWU2eTBScDkydHpzUW5LZnR0SCt3OEkvWDRqWDdOUDYrUHo2VVFhNWZ5cjhaYm83eFd2M2FSY0NBSGFCQUFJQUJBQUlBQkFBSUFCQUFJQUFPTXlmSDFVakVDQTcvQ1FnUVB6SVR3SUN4RTk3U0VDQStEay9DUWdRditBbEFRSGlkM3RJUUlENHJVNFNFQ0IrbjU4RUJJZy81Q0lCQWFKUGVMOTlkd0dRQU1JUEFnZy9DQ0Q4QklEd0V3Q2Q3S1lJUHdGaVh6MFdmZ0xFdm5vcy9BU0lmZlZZK0Frd3hhdkhsd1JaK0FrdzFZTDNWczhLUHdHRzJlMDU1VFBDVDRDcHR6b1BmVmI0Q1JDeHovL1p6eEIrQWtRZGN2My9zNFMvUDN4QnhvRHZ6UXUvQ2hBYk11RW5RR3pZaEo4QXE0U3VoK0FKUHdGaUF5ajhCSWlWUVBnSkVDdUI4Qk1nVmdMaEowQ3NCTUovUndIMnU2Mi9sTlJSVUlYL2Z1eDMyNm9DZEJSWTRUY0ZpajByRUg0Q3hGWUQ0U2RBckFUQzM0RUFGc0xyU0NEODZ5NkFTeW5sUVZQY1ZvTFBYcXNXL0g0Z2dBTXRVeURUSUNST2Z5eUNvUUo4WlFZdysraXZBa0FGT0dZSU1Pdm9yd0pBQlRqVkZHQzIwVjhGZ0Fwd3JqSEFMS1AvMFFwQUFzd2NmbE1nbUFKZGF4QXc2dWgvY2dVZ0FXWU0vMWxUSUJKZ3R2Q2Z2UVlnQVdZSy8wV0xZQkpnbHZCZnZBdEVBc3dRL3F1MlFVbUEwY04vOVRrQUNUQnkrQmM1Q0NNQlJnMS9LYVVzR2w1ZnVJZFJnbitUVnlGVUE0d1Uvc1VyZ0dxQVVZSi9jd0dJZ0JGbUZYZWJzaEFCUFU2bjd6NW5Kd0o2V2tldXVtZ2xBOWJlUE9sdTE0WVV3bjVQL2dLOUJ0SnlaektuRmdBQUFBQkpSVTVFcmtKZ2dnPT0iLCJzaXplcyI6IjE5MngxOTIiLCJ0eXBlIjoiaW1hZ2UvcG5nIiwicHVycG9zZSI6ImFueSJ9LHsic3JjIjoiZGF0YTppbWFnZS9wbmc7YmFzZTY0LGlWQk9SdzBLR2dvQUFBQU5TVWhFVWdBQUFnQUFBQUlBQ0FZQUFBRDBlTlQ2QUFBTWpFbEVRVlI0MnUzZHZYbmJXTHVGNFJmdnhTSW1vK3FnSWxkQ3RURVZxQTJxRWtkVUhWU21MampSVEtCTEh2MlJCTERYZlVjbk9XTWIvb0QxY0lPMnAyS1J0cnY5MlZVQVJ2RHkvRFM1Q3N2ak44WEFBd2dFQVlDeEJ4QUZBZ0NERHlBSUJBQUdIMEFRQ0FDakQ0QVlFQUJHSHdBeElBQ01QZ0JpUUFBWWZnQ0VnQUF3K2dDSUFRRmcrQUVRQWdMQThBTWdCQVNBNFFkQUNBZ0F3dytBRUJBQWhoOEFJZkJWYmZ3QklHODdKcjk1QUpCM0dqQVpmZ0RJQzRFMi9nQ1F0ekdUM3hRQXlEc05hT01QQUhuYjAzNERBQ0J2Z3lZWEhRQXE3cFZBRzM4QXlOdW1kb0VCSUcrakpoY1ZBQ3J1bFVBYmZ3REkyNjUyQVFFZ2I4UGFoUU9BdkMxckZ3d0E4amF0WFNnQXlOdTJkb0VBSUcvajJvVUJnTHl0YXhjRUFQSTJyMTBJQU1qYnZqYitBSkMzZ1czOEFTQnZDOXY0QTBCZUJMVHhCNEM4Q0dqakR3QjVFZERHSHdEeUlxQ05Qd0RrUlVDNzFBQ1FwMzM2QjRDOFU0QTIvZ0NRRndGdC9BRWdMd0o4QndBQXluY0FmUG9IZ0lCVGdEYitBSkFYQVczOEFTQXZBbndIQUFES2R3QjgrZ2VBZ0ZPQU52NEFrQmNCWGdFQVFIa0Y0Tk0vQUFTY0FqZ0JBQUFuQUQ3OUEwRENLVUFiZndESWl3Q3ZBQUNndkFMdzZSOEFBazRCbkFBQWdCTUFuLzRCSU9FVXdBa0FBRGdCOE9rZkFCSk9BWndBQUlBVEFKLytBU0RoRk1BSkFBQTRBZkRwSHdBU1RnR2NBQUNBRXdBQVFBQ1U0MzhBcUFGZkF6Z0JBQUFuQUQ3OUEwRENLWUFUQUFCd0FnQUFSQWVBNDM4QXFHRmZBemdCQUFBbkFBQkFiQUE0L2dlQUd2bzFnQk1BQUhBQ0FBQkVCb0RqZndDbzRWOERPQUVBQUNjQUFJQUFBQURHRHdEdi93R2dJcjRINEFRQUFMd0NBQUFFQUFBd2RnQjQvdzhBRmZNOUFDY0FBT0FWQUFBZ0FBQUFBUUFBREJRQXZnQUlBQlgxUlVBbkFBRGdGUUFBSUFBQUFBRUFBQWdBQUVBQUFBQUNBQUJZck1uZkFRQUFUZ0FBQUFFQUFBZ0FBRUFBQUFBQ0FBQVFBQUNBQUFBQUJBQUFJQUFBQUFFQUFBZ0FBRUFBQUFBQ0FBQVFBQUNBQUFBQUJBQUFJQUFBUUFBQUFBSUFBQkFBQUlBQUFBQUVBQUFnQUFBQUFRQUFDQUFBUUFBQUFBSUFBQkFBQUlBQUFBQUVBQUFnQUFBQUFRQUFDQUFBUUFBQWdBQUFBQVFBQUNBQUFBQUJBQUFJQUFCQUFBQUFBZ0FBRUFBQWdBQUFBQVFBQUNBQUFJQXIyTGdFdDNFNkhpNyszN3k3ZjNCaEFjODN2bVhhN3ZabmwyRTlONFdiQmZCOFF3QzRNZHdvZ09jYjVUc0E0VGZIRW41OHdQUE44MDBBdURuY0pJRG5tK2ViQUhCenVFa0F6emZQTndIZzVuQ1RBSjV2bm04Q3dNM2hKZ0U4UHp6ZkJBQUFJQURVcDBvR1BEYzgzd1FBQUNBQUFBQUJVSTZkeWpFWjRQbUdBQUFBQkFBQUNBQ1hBQUFFQUFBZ0FBQUFBUUFBQ0FBQVFBQUFBQUlBQUJBQUFJQUFBQUFFQUFBZ0FBQUFBUUFBQ0FBQVFBQUFBRiswY1FsNDYzUTgvUDd1LysvZC9jTXZWeERjbndnQVFoNHNiLzhiSGpUZy9xUzhBaURqNFhMTi94NjRQOTJmQ0FBVy9uRHhrQUgzSndLQTBJZUxod3k0UHhFQWhENWNQR1RBL1lrQUFBQUVBQ21mTG56S0FQY25BZ0FBRUFBQWdBQUFBQVFBQUNBQUFBQUJBQUFJQUFCQUFBQUFBZ0FBRUFBQWdBQUFBQUVBQUFnQUFFQUFBQUFDQUFBUUFBQ0FBQUFBQkFBQUlBQUFBQUVBQUFnQUFPQ3FOaTVCanRQeEVQM2pBKzVQbkFBQWdBQUFBQVFBQUNBQUFBQUJBQUFJQUFCQUFBQUFBZ0FBRUFBQWdBQUFBQVFBQUNBQUFBQUJBQUFJQUFCQUFBQUFBZ0FBRUFBQWdBQUFBQUVBQUFnQUFFQUFBQUFDQUFBUUFBQ0FBQUFBQkFBQUlBQUFBQUVBQUFnQUFFQUFBQUFDQUFBUUFBQ0FBQUFBQkFBQUlBQUFBQUVBQUFnQUFCQUFBSUFBQUFER3RIRUpjdHpkUC96M2Y1K09oMWwvZk9EUDVyNC81L2p4Y1FJQUFBZ0FBRUFBQUFBQ0FBQVFBQUNBQUFBQUJBQUFJQUFBUUFBQUFBSUFBQkFBQUlBQUFBQUVBQUFnQUFBQUFRQUFDQUFBUUFBQUFBSUFBQkFBQUlBQUFBQUVBQUFnQUFBQUFjQUg3dTRmZm8zODQ0SDcwLzJKQUFBQUJBQzNybjZmTHNEOWlRQWc3Q0hqNFFMdVR3UUFZUThaRHhkd2Z5SUFDSHZJZUxpQSs1TmwyN2dFdkgwb25JNkgzeDRzNFA1RUFPRFRCdUQrcEx3Q0FBQUVBQUFnQUFBQUFRQUFDQUFBUUFBQUFBSUFBQkFBQUlBQUFBQUVBQUFnQUFBQUFRQUFDQUFBUUFBQWdBQUFBQVFBOWJsL2s5dlBGL0I4OC9NVkFBQ0FBQUFBQkVBNUp2UHpCRHpmUE44RUFHNE9BTTgzQWVCL2dBQ2Vid2dBTjRtYkYvQWM4WHdUQUc0U053ZmdlZUw1SmdEY0pHNE93UE9ObjVxMnUvM1paYmlzMC9IZ3hnQTgzenpmQklBYnhjMEJlTDU1dmdrQU40dWJBdkI4ODN3VEFBQkErUklnQUNBQUFBQUJBQUFJQUFCQUFBQUFBZ0FBRUFBQWdBQUFBQUVBQUFnQUFFQUFBQUFDQUFBUUFBQ0FBQUFBQkFBQUlBQUFBQUVBQUFnQUFFQUFBQUFDQU9BZHI0K1Rpd0FDQUVnY2Z4RUFBZ0FJL2VRdkFrQUFBS0hIL2lJQUJBQVErczVmQklBQUFFSy84Q2NDUUFBQW9kLzJGd0VnQUlEUVArb25Ba0FBQUtGL3psOEVnQUFBUXYrU0h4RUFBZ0FJL1J2K1JBQUlBQ0Qwci9jVkFTQUFnTkMvMjE4RWdBQUFRdjloSHhHQUFBQUkvVmY5WGg4bklZQUFBRWo5SjMxRkFBSUFJSFNBUlFBQ0FDQjBlRVVBQWdBZ2RIQkZBQUlBSUhSb1JRQUNBQ0IwWUVVQUFnQkFxSUFBQUVnYVZSR0FBQUFJSFZNUmdBQUFDQjFSRVlBQUFBZ2RUeEdBQUFBSUhVMFJnQUFBQ0J6THYvNCsrNDFGQUFBWWZ4QUFBTVlmQkFCZy9JMC9DQURBK0J0L0VBQ0E4VGYrSUFBQTQyLzhRUUFBeHQvNGd3QUFqTC94QndFQUdIL2pEd0lBTVA3R0h3UUFZUHlOUHdnQXdQZ2JmeEFBWUJqOUdvMC9DQUM0MkRDT0hBSEdId1FBOEQvRE9PSlFHbjhRQU1BbmhuR2t3VFQrSUFDQUx3empDTU5wL0VFQUFOOFl4alVQcVBFSEFRRDhZQmpYT0tUR0h3UUFjS0ZCWGN1b0p2eHhSa0FBd0UzSGNlbmpPdXI0Ky9RUEFnQm1IOGVsanF6eEJ3RUFYSGtjbHphMnhoOEVBSENqY1Z6SzZCcC9FQURBamNkeDd2RTEvaUFBZ0puR2NhNFJOdjZBQUlDWngzSDBIOC80Z3dBQTQxK1pKdzdHSHdRQUdQL1E3eHdZZnhBQVlQeEQvOVNCOFFjQkFNWS85TzhkTVA0Z0FNRDRoLzdOZzhZZkJBQVkvOUIvZThENGd3QUFCdmlYQkkwL0NBRHc2WC9tbisrSTBXRDhRUUJBNU5INFozL2V4aDhRQUREWU9INzA4emYrZ0FDQVFjZnhUNzhPNHc4SUFCaDhITi8rZW93L0lBQWc1SS9EL2Z2ck12NkFBSUN3TVRIK2dBQUFvK0wzQ1JBQVlGejgvZ0FDQUl5TTN4ZEFBR0JzOFBzQkFnQ01EbjRmUUFCQXp2Z1lJT01QQWdBTUVhNDVDQUF3U0xqV0lBREFNT0VhZ3dBQUE0VnJDd0lBREJXdUtRZ0FNRmk0bGlBQXdIQzVob0FBQUFQbTJnRUNBQXlaYXdZSUFEQm9yaFVnQU1Dd3VVYUFBQUFENTlvQUZ3bUFsK2VueVdVQVF3ZmtlSGwrbXB3QWdIOUpVQlNCVndDQTRYTU5RQUFBQnRDdkhRUUFZQWlOUHdnQUlIUVFqVDhJQUNCc0dJMC9DQUFnYkNDTlB3d1dBUDR1QURDVXhoOHE1dThBY0FJQUJ0UDRnMWNBZ09FMC9pQUFnUGdCTmY0Z0FJQ3dJVFgrRUJJQXZnZ0lCdFg0UTBWOEFkQUpBQmhXNHc5ZUFRRHAvNUtnOFFjQkFJU05yZkdINEFEd1BRRElIRjNqRHhYMS90OEpBQmhmNHc5T0FJQzBFVGIrSUFDQXNBZ3cvcER0M1hmKzI5M2Vrd0ZtOHZvNEdYNmdydm4rM3drQWhQMHhRZU1QQ0FBSWV5VmcvSUg2NkJWQWxkY0FVSU84RmpEOFVJNy8zN0Z4YVdCZHB3R2ZpUUdqRDN4RUFJQS9MUUNVN3dDVXZ4VVFBR3JvNDM5ZkFnUUFKd0FBZ0FBb3J3RUFvQVk4L25jQ0FBQk9BSndDQUVEQ3AzOG5BQURnQkFBQUVBRGxOUUFBMUlESC8wNEFBTUFKZ0ZNQUFFajQ5TzhFQUFDY0FEZ0ZBSUNFVC85T0FBREFDWUJUQUFCSStQVHZCQUFBbkFBNEJRQ0FoRS8vVGdBQXdBbUFVd0FBU1BqMC8rTVRBQkVBQU9zYmY2OEFBS0M4QW5BS0FBQUJuLzZkQUFDQUV3Q25BQUNROE9uL29pY0FJZ0FBMWpIK1hnRUFRSGtGNEJRQUFBSSsvVi9sQkVBRUFNRHl0N1hYOGhNRkFPTy84QUFBQUNybk93Qk9BUUJnSFZ2YWEvMkpBNER4WC9BckFCRUFBTXZiVHQ4QkFJRHlIUUNuQUFBdytLZi9tNTRBaUFBQVdNNVc5cWkvTUFBdy9ndjZEb0FJQUlENXQ3RlRmcUVBWVB3WDhLY0FSQUFBeG4rK0xlelVYemdBSkc5Z3AxOEFBRWpjdm5ZaEFDQnY4OW9GQVlDOHJXc1hCZ0R5TnE1ZElBREkyN1oyb1FBZ2I5UGFCUU9BdkMxckZ3NEE4amFzWFVBQXlOdXVWWTNyZHJjLys1OFZBSVkvNEFUQWFRQUFOaW84QUVRQUFMYXA4bDRCbEZjQ0FCait6Qk1BcHdFQTJLRHdBQkFCQU5pZXluc0ZVRjRKQUdENE0wOEFuQVlBWUdQQ1R3Q2NCZ0JnK01NRFFBZ0FZUGdyNHhXQTF3SUEyQTRuQUU0REFERDhBa0FJQUdENG93TkFDQUNRL3ByWSszRWhBR0Q0QllBUWNCVUFETDhBRUFNQUdIMEJJQVFBTVB3Q1FBd0FZUFFGZ0JnQXdPZ0xBREVBZ05FWEFJSUFBSU12QUFRQkFBWmZBSWdDQUdPUEFFQWdBQWFlcS9vSGx5aS9LZEZ0TEFRQUFBQUFTVVZPUks1Q1lJST0iLCJzaXplcyI6IjUxMng1MTIiLCJ0eXBlIjoiaW1hZ2UvcG5nIiwicHVycG9zZSI6ImFueSJ9LHsic3JjIjoiZGF0YTppbWFnZS9wbmc7YmFzZTY0LGlWQk9SdzBLR2dvQUFBQU5TVWhFVWdBQUFnQUFBQUlBQ0FZQUFBRDBlTlQ2QUFBTmQwbEVRVlI0MnUzZHdYSGIyQllFMENhS1FYaEh4VUd0SEFtVnhrU2dOS2hJdktMaW9IYktRck9acWZMWU5iWWxrUUQ0K3B6ZFgzd1BCUkN2Ry9lQjVDYndUcnY5NGMxUmdIVjVlWDdhT0FxOGh6Y013aDJVQkJRQUJEMmdHS0FBSU93QnBRQUZBSUVQS0FRb0FBaDhRQ0ZBQVVEZ0F3b0JDZ0JDSDFBR1VBQVErb0F5Z0FLQTBBZVVBUlFBQkQrZ0NLQUFDSDBBWlFBRlFQQURLQUlvQUlJZlFCRkFBUkQ2QU1vQUNvRGdCMUFFVUFBRVA0QWlnQUlnK0FFVUFaSk1Eb0h3QjdEbW1nRGdUUWhnR3FBQUlQZ0JGQUVGUVBBTGZnQkZJSjRCRVA0QVdLdE5BTHlaQURBTlVBQUVQd0NLUUd3QkNIOEFyT2ttQU40a0FKZ0dtQUFJZndDczlRcUFOd1FBMXZ6WUF2QW1BQ0MyQkV3QWhEOEFza0FCY01JQmtBbXhCZUFrQXhCYkFpWUF3aDhBV2RGV0FJUS9BREtqckFBSWZ3QmtSM3FlQVJEOEFNUnpBVjBUQU9FUGdFd3BLd0RDSHdEWlVsWUFoRDhBTXFhc0FBaC9BR1JOV1FFUS9nREluTElDSVB3QmtEMWxCVUQ0QXlDRHlncUE4QWRBRnBVVkFPRVBnRXdxS3dEQ0h3RFpWRllBaEQ4QU1xcXNBQWgvQUdSVldRRVEvZ0FvQVdVRlFQZ0RvQVNVRlFEaEQ0QVNVRllBaEQ4QVNrQlpBUkQrQUNnQlpRVkErQU9nQkhnSUVBQVl2UUM0K3dmQUZLQ3NBQWgvQUpTQXNnSWcvQUZRQXNvS2dQQUhRQW53RUNBQU1Ib0JjUGNQZ0NsQVdRRVEvZ0FvQWN0bDRTVDhBYUN2QkhnR0FBRGlHUUIzL3dCUWtJMlQ4QWVBdmhJd0NYOEE2Q3NCbmdFQWdIZ0d3TjAvQUJSTUFTYmhEd0I5SmNBV0FBREVGb0M3ZndBb21BS1lBQUNBQ1lDN2Z3Qm9tQUpNd2g4QStrcUFMUUFBaUMwQWQvOEFVREFGTUFFQUFCTUFkLzhBMERBRk1BRUFBQk1BZC84QTBEQUZtSVEvQVBTVkFGc0FBQkJiQU83K0FhQmdDbUFDQUFBbUFPNytBYUJoQ21BQ0FBQW1BTzcrQWFCaENtQUNBQUFtQUFDQUFoRGpmd0RJZ05zQUpnQUFZQUxnN2g4QUdxWUFKZ0FBWUFMZzdoOEFHcVlBSmdBQVlBSUFBQ2dBTWY0SGdBeTREV0FDQUFBbUFPNytBYUJoQ21BQ0FBQW1BQUNBQWhEamZ3RElnTnNBSmdBQVlBSUFBTlFYQU9OL0FNaVEyd0FtQUFCZ0FnQUFWQmNBNDM4QXlMRGJBQ1lBQUdBQ0FBQW9BQUJBVHdHdy93OEFHZm81QUJNQUFEQUJBQUFVQUFDZ293RFkvd2VBRFA4Y2dBa0FBSmdBQUFBS0FBQXdmZ0d3L3c4QXFYZ093QVFBQUd3QkFBQUtBQUNnQUFBQWd4VUFEd0FDUUdvZUJEUUJBQUJiQUFDQUFnQUFLQUFBZ0FJQUFOeHlBZkFKQUFCSTFTY0JUQUFBd0JZQUFLQUFBQUFLQUFDZ0FBQUFDZ0FBb0FBQUFBb0FBTEFlRzE4Q0JBQW1BQUNBQWdBQUtBQUFnQUlBQUNnQUFJQUNBQUNzMWRZaDRDUE9wK05GLzcyNyt3Y0hGZGVRYTRqNEhnQUtGaXdMR2E0aDF4QUtBQll0aXhpdUlkY1E4UXdBNVF2WDB2OXRjQTJoQUdEaEtuOE40QnBDQWNEQ1pRRUQxeEFLQUJZdUN4aTRobEFBc0hCWndIQU51WVpRQUFBQUJRQjNMdTVnY0ExNWpTZ0FBSUFDQUFBb0FNUllNRWFZdUlhOFZoUUFBRUFCQUFBVUFBQkFBUUFBRkFBQVFBRUFBQlFBQUZBQUFBQUZBQUJRQUFBQUJRQUFVQUFBQUFVQUFGQUFBQUFGQUFCUUFBQ0FPVzBkQWtaM1BoMi9mZlQvZTNmLzhOVVJkUDVCQVlDU2hmL0hmME1RT1ArT0tMRUZBQjJML3pYL1BaeC9VQUJnNVl1L0VIRCtuWDhVQUNoZC9JV0E4Ky84b3dCQTZlSXZCSngvNXg4RkFBQlFBS0RsN3M5ZG9QUHYvS01BQUFBS0FBQ2dBQUFBQ2dBQW9BQUFBQW9BQUtBQUFBQUtBQUNnQUFBQUNnQUFvQUFBQUFvQUFLQUFBQUFLQUFBb0FBQ0FBZ0FBS0FBQWdBSUFBQ2dBQUlBQ0FBQW9BQURBeW13ZEFtN1IrWFQwR25EK3dRUUFBRkFBQUFBRkFBQlFBQUJBQVhBSUFFQUJBQUFVQUFCQUFRQUFGQUFBUUFFQUFCUUFBRUFCQUFBVUFBQkFBUUFBRkFBQVFBRUFBQlFBQUVBQkFBQVVBQUJBQVFBQUZBQUFRQUVBQUFVQUFGQUFBQUFGQUFCUUFBQUFCUUFBVUFBQUFBVUFBRkFBQUFBRkFBQlFBQUFBQlFBQVVBQUFBQVVBQUZBQUFBQUZBQUJRQUFDQUpNbldJZUFXM2QwLy9PZC9uMC9IeFY4RHkxbkQrVi9pTllBSkFBQ2dBQUFBQ2dBQW9BQUFBQW9BQUNnQUFJQUNBQUFvQUFDQUFnQUFLQUFBZ0FJQUFDZ0FBSUFDQUFBb0FBQ0FBZ0FBS0FBQWdBSUFBQ2dBQUlBQ0FBQW9BQUNBQWdBQUtBQUFvQURBemJxN2YvZzY4bjhQNXg4VUFBQkFBWUM1NzhyYy9Ubi9qallLQUpTRmdNWGYrWGVVVVFDZ0xBUXMvczYvbzRzQ0FHVWhZUEYzL2gxVlJyTjFDQmc5Qk02bjR6Y0x2L1B2L0lNQ2dMdEJuSCtJTFFBQVFBRUFBQlFBQUVBQkFBQVVBQUJBQVFBQUZBQUFRQUVBQUJRQUFFQUJBQUFVQUFCQUFRQUFGQUFBUUFFQUFCUUFBRUFCSUgvMm0rbGVLN2lHVUFBQUFBVUFBRkFBaUJHbTF3aXVJUlFBc0hDQmF3Z0ZBQXNFdUlaQUFjQUNabEhGTmVRMW9RQmdBYk53NFJweURhRUFZQUd6Y09FYWNnMHh2ODF1ZjNoekdQaVY4K2xvMFFMWEVBb0FGakVMRjdpR1VBQ3drRm13d0RXRUFnQUF4RU9BQUlBQ0FBQW9BQUNBQWdBQUtBQUFnQUlBQUNnQUFJQUNBQUFvQUFDQUFnQUFLQUFBb0FBQUFBb0FBS0FBQUFBS0FBQ2dBQUFBQ2dBQW9BQUFBQW9BQUtBQUFGekU2K1BHUVFBRkFHZ01meVVBRkFDZzlNNWZDUUFGQUNnZCt5c0JvQUFBcFh2K1NnQW9BRURwQTM5S0FDZ0FRT25UL2tvQUtBQkE2VWY5bEFCUUFJRFN6L2tyQWFBQUFLVmY4cU1FZ0FJQWxIN0RueElBQ2dCUSt2VytTZ0FvQUVEcGQvc3JBYUFBQUtVLzdLTUVvQUFBbFA2cTMrdmpSaEZBQVFCby9VbGZKUUFGQUtBMGdKVUFGQUNBMHVCVkFsQUFBRW9EVndsQUFRQW9EVm9sQUFVQW9EUmdsUUFVQUFCRkJSUUFnS1pRVlFKUUFBQkt3MVFKUUFFQUtBMVJKUUFGQUtBMFBKVUFGQUNBMHRCVUFsQUFBQXJEOHN0ZmIwNHNDZ0NBOEFjRkFFRDRnd0lBQ0gvaER3b0FJUHlGUHlnQWdQQVgvcUFBQU1KZitJTUNBQWgvNFE4S0FDRDhoVDhvQUlEd0YvNmdBQURDWC9pREFnQUlmK0VQQ2dBZy9JVS9LQUFnR1AyTndoOFVBTGhZTUk1Y0FvUS9LQURBTDRKeHhLQVUvcUFBQUg4UWpDTUZwdkFIQlFCNFJ6Q09FSnpDSHhRQTRBUEJlTXNCS3Z4QkFRQStFWXkzR0tUQ0h4UUE0RUtCZWl1aDJ2QnhSdUNmQXZEeS9PU0toeG5DY2UzaE9tcjR1L3VIbjcwOFAyMU1BR0RHY0Z4cnlBcC9zQVVBWERrYzF4YTJ3aDhVQUdDbWNGeEw2QXAvVUFDQW1jTng2ZkFWL3FBQUFBdUY0MUloTFB3QkJRQVdEc2ZSLzN2Q0h4UUFFUDdwbkRnSWYxQUFRUGlYUG5NZy9HR0ZCY0NYQVNIOHgzNHFYL2dEK2U1TGdFd0FvT0J6K2NJZnNBVUFaZC9NSi93QkJRREt2cHRmK0FNS0FQZ2xRZUVQS0FCd2E2SDYzdGM3WW1rUS9uQ2xBdUNUQUFqL01WNjM4QWZ5bTA4QW1BQWcvQWQ3L2NJZnNBVUFnNGJqLy8wZHdoOVFBR0R3Y1B6eDd4SCtnQUlBSlIrSCsvZnZFdjdBUi95MGN1ejJCMWNlU2dEQ0h6THVBNEFtQUFnVm5DZUlMUUFRTGpnL29BQ0FrTUY1Z1pvQzRBdUJFRFk0SDVDaDkvOU5BQkE2T0E5Z0FnQjk0U09BaEQ4b0FDQ0ljTXlodXdCNERnQ0JoR01OR1hiLzN3UUFCSk5qRENZQWdJQnliRUVCQUVHRll3cDlCY0J6QUFnc0hFdklrUHYvSmdBZ3VCeERNQUVBQkpoakJ3cEFiQU9BSUhQTUlBT08vMDBBUUtBNVZtQUNBQWcyeHdnVWdOZ0dBQUhuMkVBR0hQK2JBSUNnQTB3QUFMOGtxQlNCQWhEYkFDRDRIQVBJZ09OL0V3QVFnUDUyTUFFd0JRQkI2RytHaHJ0L0V3QVFpUDVXTUFFQUJLTy9FUlNBMkFZQUFTbjhJUU9PLzAwQVFGQUtmekFCTUFVQWdTbjhvZUh1M3dRQUJLZndCeE1BVXdBUW9NSWZHdTcrVFFCQWtBcC9NQUVBQktyd0J3VWd0Z0dnTVZpRlAyVDQ4YjhKQVBnbFFlRVBKZ0NtQU5BY3RzSWZldTcrVFFCQTZBcC9NQUV3QllERzhCWCswSGYzYndJQTVTVkErSU1KZ0NrQWxKVUE0USs5ZC85SmN0SGczdTBQVmhUNHBOZkhqZUFIcm43RGJRc0FpajRtS1B5QnF4UUFXd0d3M3JBVy91RHUvM3RiaHhUV1h3SStzeTBnK0lGYyt4bUFlQllBc29abkJJUSt1UHMzQVFCYkF3Q1o1U0ZBendJQXdMb3pkYnExRnd3QXd0L0hBQUdBdFJVQVV3QUFXR2VHbWdBQWdBbUFLUUFBakg3M1A5c0VRQWtBZ0hWbHBpMEFBSWd0QUZNQUFCajg3bi8yQ1lBU0FBRHJ5TWhwOUQ4UUFJUy9ad0FBZ0tVS2dDa0FBQ3liaVZQYkh3d0E3ZUcvK0JhQUVnQ0E4QzhzQUFCQWFRRXdCUURBM1gvcEJFQUpBRUQ0bDI0QktBRUFDUC9TWndDVUFBQ0V2NGNBQVlDV0FtQUtBSUM3LzlJSmdCSUFnUEF2M1FKUUFnQVEvcVhQQUNnQkFBai8wb2NBbFFBQWhIL3Bwd0NVQUFDRWYrbkhBSlVBQUdSVjZmY0FLQUVBeUtqU0x3SlNBZ0NRVGFYZkJLZ0VBQ0NUU3I4S1dBa0FRQmFWL2hhQUVnQ0FEQ3I5TVNBbEFBRFpVL3ByZ0VvQUFES245T2VBbFFBQVpFMWhBVkFDQUpBeHBRVkFDUUJBdHBRV0FDVUFBSm55ZThNSDVXNS9lUFAyQlVEd0Ywd0FUQU1Ba0IzbEJVQUpBRUJtbEJZQUpRQUFXWkd1WndEaXVRQUFCSC92Qk1BMEFBQ1pVRjRBbEFBQTJyTkFDTWFXQUlEZ053SHdSZ0RBbXE4QWVFTUFZSzJQTFlEWUVnQkE4SnNBZUtNQVlFMDNBVEFOQUVEd0t3Q0tBQUNDUDdZQXZLRUFzRmFiQUpnR0FDRDRGUUJGQUFEQnJ3QW9BZ0FJL25nR3dCc1JBR3V1Q1lCcEFJRGdSd0ZRQkFBRVB3cUFJZ0FnK0ZFQWxBRUFvWThDb0FnQUNINEZBRVVBUVBBckFDZ0RBRUpmQVVBUkFCRDhDZ0RLQUlEUVZ3QlFCZ0NFdmdLQU1nQUlmUlFBRkFKQTRLTUFvQkFBQWg4RkFJVUFFUGdvQUNnRmdMQkhBVUF4QUFROUNnQktBaURjdWFTL0FSRnlmUWV0Vm1MUEFBQUFBRWxGVGtTdVFtQ0MiLCJzaXplcyI6IjUxMng1MTIiLCJ0eXBlIjoiaW1hZ2UvcG5nIiwicHVycG9zZSI6Im1hc2thYmxlIn1dfQ==">
+<title>12周增肌计划</title>
+<style>
+/* ================= Material Design 3 tokens ================= */
+:root{
+  --primary:#1F3A5F;        --on-primary:#FFFFFF;
+  --primary-container:#D6E3F8; --on-primary-container:#0A1B33;
+  --secondary:#07C160;      --on-secondary:#FFFFFF;
+  --secondary-container:#C8F2DA; --on-secondary-container:#00301A;
+  --tertiary:#44618C;       --on-tertiary:#FFFFFF;
+  --surface:#FBFCFE;        --on-surface:#191C20;
+  --surface-dim:#EEF2F7;
+  --surface-container:#F1F4F9;
+  --surface-container-high:#E9EEF6;
+  --on-surface-variant:#44474E;
+  --outline:#C6CBD4;        --outline-variant:#E1E5EC;
+  --error:#B3261E;
+  --e1:0 1px 2px rgba(0,0,0,.10),0 1px 3px rgba(0,0,0,.06);
+  --e2:0 1px 2px rgba(0,0,0,.10),0 2px 6px rgba(0,0,0,.08);
+  --e3:0 2px 6px rgba(0,0,0,.12),0 4px 12px rgba(0,0,0,.10);
+  --r-xs:8px; --r-s:12px; --r-m:16px; --r-l:24px; --r-xl:28px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;background:var(--surface-dim);-webkit-text-size-adjust:100%}
+body{
+  color:var(--on-surface);
+  font:15px/1.5 Roboto,-apple-system,BlinkMacSystemFont,"PingFang SC","Noto Sans CJK SC","Microsoft YaHei",sans-serif;
+  padding-bottom:calc(96px + env(safe-area-inset-bottom));
+  overscroll-behavior-y:contain;
+}
+
+/* ================= Top app bar (small, sticky) ================= */
+.appbar{
+  position:sticky;top:0;z-index:30;background:var(--primary);color:var(--on-primary);
+  padding:calc(8px + env(safe-area-inset-top)) 4px 8px 16px;
+  display:flex;align-items:center;gap:4px;
+  box-shadow:var(--e2);
+}
+.appbar .titles{flex:1;min-width:0}
+.appbar h1{margin:0;font-size:21px;font-weight:500;letter-spacing:.1px;line-height:1.25;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.appbar h1 small{font-size:12.5px;font-weight:400;opacity:.78;margin-left:8px}
+.iconbtn{
+  flex:0 0 44px;width:44px;height:44px;border:0;border-radius:50%;background:transparent;
+  color:inherit;display:flex;align-items:center;justify-content:center;position:relative
+}
+.iconbtn:active{background:rgba(255,255,255,.16)}
+.iconbtn svg{width:23px;height:23px;fill:currentColor}
+
+/* ================= Progress (linear) ================= */
+.progwrap{background:var(--primary);color:var(--on-primary);padding:0 16px 12px;
+  position:sticky;top:0;z-index:29;margin-top:0}
+.prog{height:4px;border-radius:2px;background:rgba(255,255,255,.28);overflow:hidden}
+.prog i{display:block;height:100%;width:0;background:var(--secondary);
+  transition:width .3s cubic-bezier(.2,0,0,1)}
+.progmeta{display:flex;justify-content:space-between;font-size:12.5px;opacity:.9;margin-top:7px}
+
+/* ================= Banners ================= */
+.pad{padding:12px 12px 0}
+.banner{
+  display:flex;gap:12px;align-items:flex-start;background:var(--primary-container);
+  color:var(--on-primary-container);border-radius:var(--r-m);padding:14px;margin-bottom:12px;
+  box-shadow:var(--e1)
+}
+.banner .bi{flex:0 0 22px;width:22px;height:22px;fill:var(--primary);margin-top:1px}
+.banner p{margin:0;font-size:13.5px;line-height:1.55}
+.banner b{font-weight:600}
+
+/* ================= Cards (days) ================= */
+.card{background:var(--surface);border-radius:var(--r-l);margin-bottom:14px;
+  box-shadow:var(--e1);overflow:hidden}
+.card.optional{background:#FCFAFB;border:1px dashed var(--outline)}
+.cardhd{padding:16px 16px 12px;display:flex;align-items:center;gap:12px}
+.avatar{flex:0 0 40px;width:40px;height:40px;border-radius:50%;background:var(--primary);
+  color:var(--on-primary);display:flex;align-items:center;justify-content:center;
+  font-size:16px;font-weight:600}
+.card.optional .avatar{background:var(--tertiary)}
+.cardhd .hs{flex:1;min-width:0}
+.cardhd h2{margin:0;font-size:16.5px;font-weight:600;line-height:1.3}
+.cardhd .sub{font-size:12.5px;color:var(--on-surface-variant);margin-top:2px}
+.chip{
+  flex:0 0 auto;font-size:12px;font-weight:600;padding:5px 12px;border-radius:var(--r-xs);
+  background:var(--surface-container-high);color:var(--on-surface-variant);
+  font-variant-numeric:tabular-nums
+}
+.chip.full{background:var(--secondary-container);color:var(--on-secondary-container)}
+
+/* ================= Exercise rows ================= */
+.rows{padding:0 8px 8px}
+.erow{
+  display:flex;align-items:flex-start;gap:10px;padding:11px 8px;border-radius:var(--r-m);
+  position:relative;transition:background .15s ease
+}
+.erow:active{background:var(--surface-container)}
+.erow .ord{flex:0 0 26px;font-size:11.5px;color:var(--on-surface-variant);
+  text-align:center;margin-top:9px;font-weight:500}
+.cbx{
+  flex:0 0 26px;width:26px;height:26px;margin-top:6px;border-radius:50%;
+  border:2px solid var(--outline);background:transparent;position:relative;
+  display:flex;align-items:center;justify-content:center;
+  transition:background .18s ease,border-color .18s ease,transform .18s ease
+}
+.cbx::after{content:"";width:8px;height:4.5px;border-left:2.4px solid #fff;
+  border-bottom:2.4px solid #fff;transform:rotate(-45deg) scale(.2);opacity:0;
+  margin-top:-2px;transition:transform .18s ease,opacity .18s ease}
+.erow.done .cbx{background:var(--secondary);border-color:var(--secondary);
+  animation:pop .28s cubic-bezier(.2,0,0,1)}
+.erow.done .cbx::after{opacity:1;transform:rotate(-45deg) scale(1)}
+@keyframes pop{0%{transform:scale(1)}42%{transform:scale(1.3)}100%{transform:scale(1)}}
+.erow .body{flex:1;min-width:0}
+.erow .nm{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.erow .nm span.t{font-size:15px;font-weight:600;line-height:1.35}
+.tag{font-size:10.5px;font-weight:600;padding:2px 7px;border-radius:6px;
+  background:#FFF3D6;color:#7A5200}
+.meta{font-size:12.5px;color:var(--on-surface-variant);margin-top:3px;
+  font-variant-numeric:tabular-nums;line-height:1.45}
+.meta .w{color:var(--primary);font-weight:700}
+.erow.done .nm span.t,.erow.done .meta{color:#A9B2BF}
+.erow.done .meta .w{color:#A9B2BF}
+.tbtn{
+  margin-top:7px;border:1px solid var(--outline-variant);background:var(--surface-container);
+  color:var(--primary);font:500 12.5px/1 inherit;font-family:inherit;
+  padding:6px 12px;border-radius:var(--r-xs);display:inline-flex;align-items:center;gap:5px
+}
+.tbtn svg{width:14px;height:14px;fill:currentColor;transition:transform .2s ease}
+.tbtn.open svg{transform:rotate(180deg)}
+.tbtn:active{background:var(--surface-container-high)}
+.note{display:none;margin-top:8px;padding:10px 12px;border-radius:0 var(--r-s) var(--r-s) 0;
+  background:var(--surface-container);border-left:3px solid var(--primary);
+  font-size:12.5px;line-height:1.65;color:var(--on-surface-variant)}
+.note.open{display:block}
+.sep{height:1px;background:var(--outline-variant);margin:0 16px}
+
+/* ================= Bottom navigation bar ================= */
+.navbar{
+  position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--surface-container);
+  border-top:1px solid var(--outline-variant);
+  display:flex;padding:8px 6px calc(8px + env(safe-area-inset-bottom));
+}
+.navitem{
+  flex:1;border:0;background:transparent;font-family:inherit;color:var(--on-surface-variant);
+  display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 0;
+  font-size:11.5px;font-weight:500
+}
+.navitem .pill{
+  width:60px;height:30px;border-radius:15px;display:flex;align-items:center;justify-content:center;
+  transition:background .2s ease
+}
+.navitem svg{width:21px;height:21px;fill:currentColor}
+.navitem.act{color:var(--on-surface)}
+.navitem.act .pill{background:var(--secondary-container);color:var(--on-secondary-container)}
+.navitem:disabled{opacity:.35}
+.navitem:active .pill{background:var(--surface-container-high)}
+
+/* ================= Bottom sheet ================= */
+.scrim{position:fixed;inset:0;background:rgba(0,0,0,.42);z-index:40;opacity:0;
+  pointer-events:none;transition:opacity .22s ease}
+.scrim.on{opacity:1;pointer-events:auto}
+.sheet{
+  position:fixed;left:0;right:0;bottom:0;z-index:41;background:var(--surface-container);
+  border-radius:var(--r-xl) var(--r-xl) 0 0;padding:8px 0 calc(20px + env(safe-area-inset-bottom));
+  transform:translateY(102%);transition:transform .28s cubic-bezier(.2,0,0,1);
+  max-height:82vh;overflow:auto;box-shadow:var(--e3)
+}
+.sheet.on{transform:translateY(0)}
+.grab{width:32px;height:4px;border-radius:2px;background:var(--outline);
+  margin:6px auto 12px}
+.sheet h3{margin:0 0 4px;padding:0 24px;font-size:16px;font-weight:600}
+.sheet .hint{padding:0 24px 12px;font-size:12.5px;color:var(--on-surface-variant)}
+.wgrid{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;padding:0 20px}
+.wgrid button{
+  aspect-ratio:1;border:1px solid var(--outline-variant);background:var(--surface);
+  border-radius:var(--r-m);font:600 15px/1 inherit;font-family:inherit;color:var(--on-surface);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px
+}
+.wgrid button i{width:5px;height:5px;border-radius:50%;background:var(--secondary);opacity:0}
+.wgrid button.has i{opacity:1}
+.wgrid button.cur{background:var(--primary);color:var(--on-primary);border-color:var(--primary)}
+.menu{list-style:none;margin:0;padding:0 8px}
+.menu li{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:var(--r-m);
+  font-size:15px}
+.menu li:active{background:var(--surface-container-high)}
+.menu li svg{width:21px;height:21px;fill:var(--on-surface-variant);flex:0 0 21px}
+.menu li.danger{color:var(--error)}
+.menu li.danger svg{fill:var(--error)}
+
+/* ================= Snackbar ================= */
+.snack{
+  position:fixed;left:14px;right:14px;bottom:calc(92px + env(safe-area-inset-bottom));z-index:50;
+  background:#313033;color:#F4EFF4;border-radius:var(--r-xs);padding:14px 16px;font-size:13.5px;
+  box-shadow:var(--e3);opacity:0;transform:translateY(14px);pointer-events:none;
+  transition:opacity .22s ease,transform .22s ease
+}
+.snack.on{opacity:1;transform:translateY(0)}
+</style>
+</head>
+<body>
+
+<header class="appbar">
+  <div class="titles">
+    <h1 id="wkTitle">第 1 周<small id="wkPhase"></small></h1>
+  </div>
+  <button class="iconbtn" id="btnMenu" aria-label="更多">
+    <svg viewBox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
+  </button>
+</header>
+<div class="progwrap">
+  <div class="prog"><i id="barFill"></i></div>
+  <div class="progmeta"><span id="pctText">0 / 0</span><span id="pctHint">0%</span></div>
+</div>
+
+<main class="pad">
+  <div class="banner">
+    <svg class="bi" viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+    <p id="wkTip"></p>
+  </div>
+  <div id="app"></div>
+</main>
+
+<nav class="navbar">
+  <button class="navitem" id="btnPrev">
+    <span class="pill"><svg viewBox="0 0 24 24"><path d="M15.4 7.4L14 6l-6 6 6 6 1.4-1.4L10.8 12z"/></svg></span>
+    上一周
+  </button>
+  <button class="navitem" id="btnPick">
+    <span class="pill"><svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2zm0 16H5V9h14v10zM7 11h5v5H7z"/></svg></span>
+    选周次
+  </button>
+  <button class="navitem" id="btnNext">
+    <span class="pill"><svg viewBox="0 0 24 24"><path d="M8.6 16.6L10 18l6-6-6-6-1.4 1.4L13.2 12z"/></svg></span>
+    下一周
+  </button>
+</nav>
+
+<div class="scrim" id="scrim"></div>
+
+<div class="sheet" id="sheetWeek">
+  <div class="grab"></div>
+  <h3>跳到哪一周</h3>
+  <div class="hint">绿点表示那一周已经有打勾记录</div>
+  <div class="wgrid" id="weekGrid"></div>
+</div>
+
+<div class="sheet" id="sheetMenu">
+  <div class="grab"></div>
+  <h3>更多</h3>
+  <div class="hint">记录只存在这台手机里，建议定期备份</div>
+  <ul class="menu">
+    <li id="miTop"><svg viewBox="0 0 24 24"><path d="M12 4l-8 8h5v8h6v-8h5z"/></svg>回到顶部</li>
+    <li id="miBackup"><svg viewBox="0 0 24 24"><path d="M19 12v7H5v-7H3v7a2 2 0 002 2h14a2 2 0 002-2v-7zM13 12.67l2.59-2.58L17 11.5l-5 5-5-5 1.41-1.41L11 12.67V3h2z"/></svg>备份记录（导出 JSON）</li>
+    <li id="miRestore"><svg viewBox="0 0 24 24"><path d="M19 12v7H5v-7H3v7a2 2 0 002 2h14a2 2 0 002-2v-7zM13 5.83l2.59 2.58L17 7l-5-5-5 5 1.41 1.41L11 5.83V15h2z"/></svg>恢复记录（导入 JSON）</li>
+    <li class="danger" id="miReset"><svg viewBox="0 0 24 24"><path d="M6 19a2 2 0 002 2h8a2 2 0 002-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>清空全部记录</li>
+  </ul>
+</div>
+
+<div class="snack" id="snack"></div>
+<input type="file" id="fileIn" accept=".json,application/json" style="display:none">
+
+<script>
+/* ===================== 计划数据 ===================== */
+var D1=[
+ ["A","杠铃平板卧推",0,["空杆","空杆+2.5/边","空杆+5/边","空杆+5/边","空杆+7.5/边"],"4","8-10","120 秒","奥杆 20kg（含杠重）。第一次必须找人保护，或用深蹲架把安全销设在胸口高度，不要用卡扣锁死杠铃片。握距比肩略宽，肘与躯干约 45°，下放触胸不弹震。"],
+ ["B","上斜推胸机",0,["空载","2.5 kg/边","5 kg/边","5 kg/边","7.5 kg/边"],"3","10-12","90 秒","靠背只做 30°，角度越大越变成前束主导。前两周空载，先把轨迹和肩胛位置找对。"],
+ ["C","坐姿推肩机",0,["空载","2.5 kg/边","2.5 kg/边","5 kg/边","5 kg/边"],"3","10-12","90 秒","靠背接近竖直，全程不塌腰。肩前侧不适就把重量减半、缩小行程，或退回空载。"],
+ ["D","哑铃侧平举",0,["4 kg","5 kg","5 kg","6 kg","7.5 kg"],"4","12-15","60 秒","重量是每只手。小重量慢速，顶峰停 1 秒。这是最容易贪重的动作，宁轻勿重——用惯性甩起来的侧平举等于没练。"],
+ ["E","绳索三头下压",0,["10 kg","12.5 kg","15 kg","15 kg","17.5 kg"],"3","12-15","60 秒","大臂夹紧体侧不动，只动小臂。身体不要前后晃借力。"],
+ ["F","绳索过顶臂屈伸",0,["10 kg","12.5 kg","15 kg","15 kg","17.5 kg"],"3","10-12","60 秒","背对滑轮，肘尖朝前不动，只动小臂。三头长头决定手臂围度，别省这一步。"],
+ ["末尾","弹力带拉开 + 过顶环绕",1,["轻带","轻带","轻带","轻带","轻带"],"3+2","20 / 15","45 秒","体态方案一，每天都可做，不限训练日。"]
+];
+var D2=[
+ ["A","高位下拉",0,["25 kg","30 kg","30 kg","35 kg","40 kg"],"4","8-10","120 秒","先沉肩再拉，拉至锁骨上方，禁止后仰借力。这是未来做引体向上的地基。"],
+ ["B","坐姿划船机",0,["空载","2.5 kg/边","5 kg/边","5 kg/边","7.5 kg/边"],"4","10-12","90 秒","挺胸，肘贴身后拉，肩胛主动夹紧。躯干不要后仰借力。"],
+ ["C","挂片式划船机",0,["空载","2.5 kg/边","2.5 kg/边","5 kg/边","5 kg/边"],"3","10-12","90 秒","必须选有胸垫支撑的版本——你有下背痛，不做俯身杠铃划船。"],
+ ["D","面拉",0,["5 kg","5 kg","7.5 kg","7.5 kg","10 kg"],"3","15-20","60 秒","圆肩驼背最重要的一个动作。绳索调至面部高度，手拉向额头两侧，肘高于手。"],
+ ["E","俯身哑铃飞鸟",0,["4 kg","5 kg","5 kg","6 kg","7.5 kg"],"3","15","60 秒","重量是每只手。躯干前倾接近水平，肘微屈向两侧外展。腰不舒服就单手撑凳做。"],
+ ["F","绳索弯举 + 锤式弯举",0,["7.5 kg","10 kg","10 kg","12.5 kg","15 kg"],"3+3","各 10","75 秒","超级组：两个动作连着做，中间不休息。大臂夹紧不摆动，离心慢放。"],
+ ["末尾","死虫 + 鸟狗 + 侧平板",1,["自重","自重","自重","自重","自重"],"各 3","10/侧\n平板 20-30\"","45 秒","体态方案二。腰不离地，慢速稳定，臀不要掉。"]
+];
+var D3=[
+ ["A","史密斯机深蹲",0,["空杆","空杆","空杆+2.5/边","空杆+5/边","空杆+7.5/边"],"4","10-12","120 秒","现在它是你唯一的深蹲动作。前两周只做空杆。脚略前移，下到大腿接近平行即可。腰不适就减重、缩小行程，不要硬扛。"],
+ ["B","腿屈伸机",0,["10 kg","12.5 kg","15 kg","15-20 kg","20 kg"],"4","12-15","75 秒","股四头孤立，顶峰停 1 秒慢放。膝前侧不适就减重、缩小行程。这是腿部第二个动作，位置提前。"],
+ ["C","上斜哑铃卧推",0,["10 kg","10 kg","12.5 kg","12.5 kg","15 kg"],"3","10-12","90 秒","重量是每只手。椅背 30°，躺下时用大腿把哑铃顶上去，别从地上硬拽。"],
+ ["D","坐姿侧平举（器械）",0,["空载","2.5 kg/边","2.5 kg/边","5 kg/边","5 kg/边"],"3","12-15","60 秒","肩中束补量，让肩变宽的关键。没有这个器械就用绳索单臂侧平举代替。"],
+ ["E","绳索过顶臂屈伸",0,["10 kg","12.5 kg","12.5 kg","15 kg","17.5 kg"],"3","12-15","60 秒","背对滑轮，肘尖朝前不动。手肘略向前收，能减轻肩肘压力。"],
+ ["F","死虫 + 鸟狗 + 侧平板",1,["自重","自重","自重","自重","自重"],"各 3","10/侧\n平板 20-30\"","45 秒","替代卷腹和举腿——你有下背痛，禁止做腰椎反复弯曲的动作。"],
+ ["收尾","坡度快走",1,["坡度 8-10","坡度 8-10","坡度 8-10","坡度 8-10","坡度 8-10"],"1","12 分钟","—","只做 10-15 分钟，作用是把食欲拉起来。不要做长时间有氧，你要增重。"]
+];
+var D4=[
+ ["A","上斜推胸机",0,["空载","2.5 kg/边","2.5 kg/边","5 kg/边","7.5 kg/边"],"3","10-12","90 秒","换角度补容量，靠背 30°。"],
+ ["B","高位下拉（反握）",0,["25 kg","25 kg","30 kg","30 kg","35 kg"],"3","10-12","90 秒","换握法换角度，避免身体适应单一轨迹。"],
+ ["C","绳索夹胸",0,["5 kg","5 kg","7.5 kg","7.5 kg","10 kg"],"3","12-15","60 秒","站姿交错步，感受胸内侧收缩，肘微屈固定不变。"],
+ ["D","绳索侧平举",0,["2.5 kg","2.5 kg","2.5 kg","3.5 kg","5 kg"],"3","15","60 秒","中束补量，轻重量。单手持 D 把，站在滑轮侧方。"],
+ ["E","面拉 + 绳索三头下压",0,["5 / 10","5 / 10","5 / 12.5","7.5 / 12.5","7.5 / 15"],"3+3","各 15","60 秒","超级组，两个动作连着做。面拉肘高于手，下压大臂固定。"],
+ ["F","绳索弯举 + 反向弯举",0,["7.5 / 5","7.5 / 5","10 / 5","10 / 7.5","12.5 / 7.5"],"3+3","各 12","60 秒","超级组。离心慢放，大臂不摆动。"]
+];
+var DELOAD={"面拉":"5 kg","杠铃平板卧推":"空杆","上斜推胸机":"2.5 kg/边","坐姿推肩机":"2.5 kg/边","哑铃侧平举":"2.5 kg","绳索三头下压":"10 kg","绳索过顶臂屈伸":"10 kg","弹力带拉开 + 过顶环绕":"轻带","高位下拉":"25 kg","坐姿划船机":"2.5 kg/边","挂片式划船机":"空载","俯身哑铃飞鸟":"2.5 kg","绳索弯举 + 锤式弯举":"7.5 kg","死虫 + 鸟狗 + 侧平板":"自重","史密斯机深蹲":"空杆","腿屈伸机":"10 kg","上斜哑铃卧推":"7.5 kg","坐姿侧平举（器械）":"空载","坡度快走":"坡度 8-10","高位下拉（反握）":"20 kg","绳索夹胸":"5 kg","绳索侧平举":"2.5 kg","面拉 + 绳索三头下压":"5 / 7.5","绳索弯举 + 反向弯举":"7.5 / 5"};
+var DAYS=[
+ {t:"周三 推",s:"胸 / 肩 / 三头",ex:D1},
+ {t:"周四 拉",s:"背 / 二头 / 后束",ex:D2},
+ {t:"周六 腿 + 上肢",s:"深蹲 / 腿屈伸 + 胸肩三头",ex:D3},
+ {t:"周日 可选",s:"上肢补充 · 恢复好才练",ex:D4,opt:1}
+];
+var PHASE={1:0,2:0,3:1,4:1,5:2,6:2,7:3,8:3,9:3,10:-1,11:4,12:4};
+var WK={
+ 1:["第 1 阶段 · 动作学习期","只做 2 组／动作，重量照表，必须能轻松做完。本周目标是记住动作，不是练累。"],
+ 2:["第 1 阶段 · 动作学习期","仍然 2 组／动作，重量不变。感受每个动作的轨迹和发力位置。"],
+ 3:["第 2 阶段 · 正式开始","组数升到正常。肩胸开始加片，其余重量不变。"],
+ 4:["第 2 阶段 · 正式开始","重量与第 3 周相同，目标是把每组的次数往上加。"],
+ 5:["第 3 阶段 · 上强度","大部分动作加重。复合动作留 2-3 次余力，孤立动作可留 0-1 次。"],
+ 6:["第 3 阶段 · 上强度","重量不变，冲次数。做满区间上限下周再加重量。"],
+ 7:["第 4 阶段 · 加量","腿日加做周日上肢补充（恢复好才加）。这是全程强度最高的一段。"],
+ 8:["第 4 阶段 · 加量","重量稳住，盯住次数和动作质量。注意睡眠和食欲。"],
+ 9:["第 4 阶段 · 加量","本阶段最后一周。如果连续两周重量上不去，提前进入减载。"],
+ 10:["减载周","所有重量减 30-40%（已换成具体数值），每个动作组数减半，练 3 天即可。这周不是偷懒，是让身体追上训练量。"],
+ 11:["第 5 阶段 · 冲刺","减载后身体已恢复，重量上到全程最高档。"],
+ 12:["第 5 阶段 · 冲刺","最后一周。练完称体重、量围度、拍照片，和第 1 周对比。"]
+};
+
+/* ===================== 状态 ===================== */
+var KEY="fitness12w_v1";
+var S={week:1,ck:{}};
+try{var raw=localStorage.getItem(KEY);
+  if(raw){var o=JSON.parse(raw);if(o&&o.ck)S={week:o.week||1,ck:o.ck};}
+}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){snack("保存失败：可能存储空间不足");}}
+function kk(w,d,i){return w+"|"+d+"|"+i;}
+function need(w){return (w||S.week)<=6?3:4;}
+function weightOf(it,w){if(w===10)return DELOAD[it[1]]||it[3][3];return it[3][PHASE[w]];}
+function setsOf(it,w,ord){
+  var base=it[4],ord0=String(ord);
+  var light=ord0.indexOf("热身")>=0||ord0.indexOf("末尾")>=0||ord0.indexOf("收尾")>=0;
+  if(w===10)return light?base:"减半";
+  if(w<=2&&!light)return "2";
+  return base;
+}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){
+  return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+function $(id){return document.getElementById(id);}
+
+/* ===================== 渲染 ===================== */
+var CHEV='<svg viewBox="0 0 24 24"><path d="M7.4 8.6L12 13.2l4.6-4.6L18 10l-6 6-6-6z"/></svg>';
+
+function render(){
+  var w=S.week,n=need(w),ph=WK[w],total=0,done=0,html="";
+  $("wkTitle").innerHTML="第 "+w+" 周<small>"+esc(ph[0])+"</small>";
+  $("wkTip").textContent=ph[1];
+  for(var d=0;d<n;d++){
+    var day=DAYS[d],list=day.ex,dd=0;
+    for(var i=0;i<list.length;i++){total++;if(S.ck[kk(w,d,i)]){done++;dd++;}}
+    var full=(dd===list.length&&list.length>0);
+    html+='<section class="card'+(day.opt?" optional":"")+'">'
+        +'<div class="cardhd"><div class="avatar">'+(d+1)+'</div>'
+        +'<div class="hs"><h2>'+esc(day.t)+'</h2><div class="sub">'+esc(day.s)+'</div></div>'
+        +'<div class="chip'+(full?" full":"")+'" id="dc-'+d+'">'+dd+" / "+list.length+'</div></div>'
+        +'<div class="rows">';
+    for(var j=0;j<list.length;j++){
+      var it=list[j],id=kk(w,d,j),on=S.ck[id]?1:0;
+      var wt=weightOf(it,w),st=setsOf(it,w,it[0]);
+      html+='<div class="erow'+(on?" done":"")+'" data-k="'+id+'" data-d="'+d+'" data-i="'+j+'">'
+          +'<div class="ord">'+esc(it[0])+'</div>'
+          +'<div class="cbx"></div>'
+          +'<div class="body">'
+          +'<div class="nm"><span class="t">'+esc(it[1])+'</span>'
+          +(it[2]?'<span class="tag">可跳过</span>':'')+'</div>'
+          +'<div class="meta"><span class="w">'+esc(wt)+'</span> · '+esc(st)+' × '
+          +esc(it[5]).replace(/\n/g," / ")+' · 休息 '+esc(it[6])+'</div>'
+          +'<button class="tbtn">要点'+CHEV+'</button>'
+          +'<div class="note">'+esc(it[7])+'</div>'
+          +'</div></div>';
+      if(j<list.length-1)html+='<div class="sep"></div>';
+    }
+    html+='</div></section>';
+  }
+  $("app").innerHTML=html;
+  paintProgress(done,total);
+  $("btnPrev").disabled=(w<=1);
+  $("btnNext").disabled=(w>=12);
+  save();
+}
+function paintProgress(done,total){
+  var p=total?Math.round(done*100/total):0;
+  $("barFill").style.width=p+"%";
+  $("pctText").textContent="本周完成 "+done+" / "+total+" 项";
+  $("pctHint").textContent=p+"%";
+}
+function tally(){
+  var n=need(),total=0,done=0;
+  for(var a=0;a<n;a++)for(var b=0;b<DAYS[a].ex.length;b++){
+    total++;if(S.ck[kk(S.week,a,b)])done++;}
+  return {done:done,total:total};
+}
+function refreshRow(el){
+  var id=el.getAttribute("data-k"),d=+el.getAttribute("data-d");
+  var on=!!S.ck[id];
+  el.classList.toggle("done",on);
+  var day=DAYS[d],list=day.ex,dd=0;
+  for(var i=0;i<list.length;i++)if(S.ck[kk(S.week,d,i)])dd++;
+  var chip=$("dc-"+d);
+  if(chip){chip.textContent=dd+" / "+list.length;
+    chip.classList.toggle("full",dd===list.length&&list.length>0);}
+  var t=tally();paintProgress(t.done,t.total);save();
+}
+
+/* ===================== 交互 ===================== */
+$("app").addEventListener("click",function(e){
+  var tb=e.target.closest(".tbtn");
+  if(tb){
+    var nt=tb.parentNode.querySelector(".note");
+    var open=nt.classList.toggle("open");
+    tb.classList.toggle("open",open);
+    tb.childNodes[0].nodeValue=open?"收起":"要点";
+    return;
+  }
+  var row=e.target.closest(".erow");
+  if(!row)return;
+  var id=row.getAttribute("data-k");
+  if(S.ck[id])delete S.ck[id];else S.ck[id]=1;
+  refreshRow(row);
+});
+$("btnPrev").onclick=function(){if(S.week>1){S.week--;render();window.scrollTo({top:0});}};
+$("btnNext").onclick=function(){if(S.week<12){S.week++;render();window.scrollTo({top:0});}};
+
+/* 底部弹层 */
+var scrim=$("scrim"),shWeek=$("sheetWeek"),shMenu=$("sheetMenu");
+function closeSheets(){scrim.classList.remove("on");shWeek.classList.remove("on");shMenu.classList.remove("on");}
+function openSheet(el){scrim.classList.add("on");el.classList.add("on");}
+scrim.onclick=closeSheets;
+
+$("btnPick").onclick=function(){
+  var h="";
+  for(var w=1;w<=12;w++){
+    var has=0,n=need(w);
+    for(var d=0;d<n;d++)for(var i=0;i<DAYS[d].ex.length;i++)if(S.ck[kk(w,d,i)])has=1;
+    h+='<button data-w="'+w+'" class="'+(w===S.week?"cur ":"")+(has?"has":"")+'">'+w+'<i></i></button>';
+  }
+  $("weekGrid").innerHTML=h;
+  openSheet(shWeek);
+};
+$("weekGrid").onclick=function(e){
+  var b=e.target.closest("button");if(!b)return;
+  S.week=+b.getAttribute("data-w");closeSheets();render();window.scrollTo({top:0});
+};
+$("btnMenu").onclick=function(){openSheet(shMenu);};
+$("miTop").onclick=function(){closeSheets();window.scrollTo({top:0,behavior:"smooth"});};
+$("miBackup").onclick=function(){
+  closeSheets();
+  try{
+    var blob=new Blob([JSON.stringify(S)],{type:"application/json"});
+    var a=document.createElement("a");
+    a.href=URL.createObjectURL(blob);
+    a.download="训练记录备份_"+new Date().toISOString().slice(0,10)+".json";
+    document.body.appendChild(a);a.click();
+    setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},1500);
+    snack("已生成备份文件。若无反应，请用微信发给自己再保存");
+  }catch(err){snack("导出失败：" + err.message);}
+};
+$("miRestore").onclick=function(){closeSheets();$("fileIn").click();};
+$("miReset").onclick=function(){
+  closeSheets();
+  if(!confirm("确定清空全部 12 周的勾选记录？此操作无法撤销。"))return;
+  S.ck={};save();render();snack("已清空全部记录");
+};
+$("fileIn").onchange=function(e){
+  var f=e.target.files&&e.target.files[0];if(!f)return;
+  var fr=new FileReader();
+  fr.onload=function(){
+    try{
+      var o=JSON.parse(fr.result);
+      if(!o||typeof o.ck!=="object")throw new Error("格式不对");
+      S={week:o.week||1,ck:o.ck};save();render();snack("恢复成功");
+    }catch(err){snack("恢复失败：" + err.message);}
+  };
+  fr.readAsText(f);e.target.value="";
+};
+var stmr;
+function snack(m){
+  var s=$("snack");s.textContent=m;s.classList.add("on");
+  clearTimeout(stmr);stmr=setTimeout(function(){s.classList.remove("on");},2400);
+}
+render();
+</script>
+</body>
+</html>
