@@ -1,0 +1,9 @@
+# Capacitor / Node
+node_modules/
+android/
+*.apk
+*.aab
+
+# 系统与编辑器
+.DS_Store
+.idea/
