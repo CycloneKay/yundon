@@ -620,7 +620,7 @@ body.switching .tabbar,body.switching .appbar,body.switching .fhead{
 <div class="sheet" id="foodSetSheet">
   <div class="grab"></div>
   <h3>识别设置</h3>
-  <div class="hint">豆包（火山方舟）或其他 OpenAI 兼容服务</div>
+  <div class="hint">DeepSeek 视觉模型（可换任意 OpenAI 兼容服务）</div>
   <div class="mstep mset">
     <label>接口地址</label>
     <input id="cfgBase" type="url" autocomplete="off" spellcheck="false">
@@ -629,13 +629,13 @@ body.switching .tabbar,body.switching .appbar,body.switching .fhead{
     <label>模型名 / 推理接入点</label>
     <input id="cfgModel" list="mdlList" autocomplete="off" spellcheck="false">
     <datalist id="mdlList">
-      <option value="doubao-seed-1-6-250615"></option>
-      <option value="doubao-seed-1-6-flash-250715"></option>
-      <option value="doubao-1-5-vision-pro-32k-250115"></option>
+      <option value="deepseek-v4-flash-vision-exp"></option>
+      <option value="deepseek-flash"></option>
+      <option value="glm-4v-flash"></option>
     </datalist>
     <label>每日热量目标（kcal）</label>
     <input id="cfgTarget" type="number" inputmode="numeric" min="800" max="6000">
-    <div class="hint">填方舟控制台里的模型名或推理接入点 ID（ep- 开头）。Key 只存在本机 localStorage，不会上传到别处。<br>网页版直连会被浏览器 CORS 拦，请用打包后的 App。</div>
+    <div class="hint">默认走 DeepSeek 视觉模型，只需填 Key。Key 只存在本机 localStorage，不会上传到别处。<br>网页版直连会被浏览器 CORS 拦，请用打包后的 App。</div>
     <button class="mbtn" id="cfgSave" style="margin-top:14px">保存</button>
   </div>
 </div>
@@ -765,7 +765,7 @@ var FOODDB=[["丁桂鱼",157.0,29.7,0.2,4.2],["丁香鱼（干）",196.0,37.5,4.
 
 /* ================= 饮食记录模块 ================= */
 var FKEY = "fitness12w_food_v1";
-var FS = { target: 2800, base: "https://ark.cn-beijing.volces.com/api/v3", model: "doubao-seed-1-6-250615", key: "", logs: {}, aidb: {} };
+var FS = { target: 2800, base: "https://api.deepseek.com", model: "deepseek-v4-flash-vision-exp", key: "", logs: {}, aidb: {} };
 (function () {
   try {
     var r = localStorage.getItem(FKEY);
