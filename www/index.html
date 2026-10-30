@@ -1225,8 +1225,14 @@ $("fBack").onclick = fclose;
 $("fSet").onclick = fsOpen;
 $("fAdd").onclick = msOpen;
 $("cfgSave").onclick = function () {
+  var _k = ($("cfgKey").value || "").trim();
+  if (/^https?:\/\//i.test(_k) || /\.(com|cn|net|io)\/?$/i.test(_k)) {
+    snack("这是接口地址，请填到「接口地址」里，Key 不是网址");
+    return;
+  }
+  if (_k && _k.length < 20) { snack("Key 看起来太短了，DeepSeek 的 Key 以 sk- 开头"); return; }
   FS.base = ($("cfgBase").value || "").trim() || FS.base;
-  FS.key = ($("cfgKey").value || "").trim();
+  FS.key = _k;
   FS.model = ($("cfgModel").value || "").trim() || FS.model;
   FS.target = Math.max(800, Math.min(6000, +$("cfgTarget").value || 2800));
   fsave(); fsClose(); frender(); snack("已保存");
