@@ -463,6 +463,15 @@ html{background:#E7EFF9}
 .sw-l{animation:swl .26s cubic-bezier(.2,0,0,1)}
 .sw-r{animation:swr .26s cubic-bezier(.2,0,0,1)}
 
+
+/* ---- edge-to-edge：固定定位的层各自留安全区 ---- */
+.fview{padding-top:max(env(safe-area-inset-top),34px)}
+.fbody{padding-bottom:calc(200px + max(env(safe-area-inset-bottom),20px))}
+.tabbar{bottom:calc(14px + max(env(safe-area-inset-bottom),20px))}
+.fab{bottom:calc(92px + max(env(safe-area-inset-bottom),20px))}
+/* 独立合成层，避免每次重渲染重新计算背景模糊造成抖动 */
+.appbar,.tabbar,.fhead{transform:translateZ(0);backface-visibility:hidden;will-change:transform}
+
 /* ================= 饮食页跟随玻璃 ================= */
 .fview{background:
     radial-gradient(62% 42% at 2% -10%,rgba(31,58,95,.42),transparent 68%),
