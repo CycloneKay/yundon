@@ -45,7 +45,13 @@ jobs:
         run: npx cap add android
 
       - name: 套用自适应图标
-        run: cp -r resources/android/res/. android/app/src/main/res/
+        run: |
+          cp -r resources/android/res/. android/app/src/main/res/
+          # 删掉 Capacitor 模板残留的小尺寸旧图标，避免低密度设备回退到默认图标
+          rm -f android/app/src/main/res/mipmap-mdpi/ic_launcher*.png \
+                android/app/src/main/res/mipmap-hdpi/ic_launcher*.png \
+                android/app/src/main/res/mipmap-xhdpi/ic_launcher*.png
+          echo "图标已套用"
 
       - name: 校验图标已覆盖
         run: |
@@ -64,6 +70,12 @@ jobs:
           cd android
           chmod +x gradlew
           ./gradlew assembleDebug --no-daemon --stacktrace
+
+      - name: 核对 APK 里打进去的图标
+        run: |
+          APK=$(ls android/app/build/outputs/apk/debug/*.apk | head -1)
+          echo "APK: $APK"
+          unzip -l "$APK" | grep -i "mipmap" || echo "（没有找到 mipmap 资源，可能是资源被重命名了）"
 
       - name: 校验 APK 签名
         run: |
