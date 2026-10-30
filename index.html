@@ -312,9 +312,199 @@ body{
   transition:opacity .22s ease,transform .22s ease
 }
 .snack.on{opacity:1;transform:translateY(0)}
+
+/* ================= 液态玻璃主题（覆盖层） ================= */
+:root{--ink:#16233A;--ink2:#5D6E88;--glass-hi:rgba(255,255,255,.82);--glass-lo:rgba(255,255,255,.48)}
+body{background:#EAF1FA;color:var(--ink)}
+.bgwrap{position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:
+    radial-gradient(62% 42% at 2% -10%,rgba(31,58,95,.42),transparent 68%),
+    radial-gradient(56% 38% at 108% 2%,rgba(7,193,96,.38),transparent 66%),
+    radial-gradient(72% 46% at 48% 114%,rgba(96,110,255,.34),transparent 70%),
+    radial-gradient(46% 32% at 94% 60%,rgba(31,214,168,.32),transparent 68%),
+    linear-gradient(168deg,#EBF2FB 0%,#E6EEF8 48%,#EFF4FA 100%)}
+
+/* 顶栏 → 浮动玻璃 */
+.appbar{position:sticky;top:calc(6px + env(safe-area-inset-top));z-index:30;
+  margin:6px 14px 10px;padding:11px 11px 11px 16px;border-radius:26px;
+  background:linear-gradient(152deg,var(--glass-hi),var(--glass-lo));
+  -webkit-backdrop-filter:blur(26px) saturate(180%);backdrop-filter:blur(26px) saturate(180%);
+  border:1px solid rgba(255,255,255,.82);
+  box-shadow:0 10px 30px rgba(23,43,77,.13),inset 0 1px 0 rgba(255,255,255,.98);
+  color:var(--ink)}
+.appbar h1{color:var(--ink);font-size:20px;font-weight:700;letter-spacing:-.3px}
+.appbar h1 small{color:var(--ink2);font-size:11.5px;font-weight:400;margin-left:7px;opacity:1}
+.iconbtn{color:#1F3A5F;border-radius:14px;width:38px;height:38px;flex:0 0 38px;
+  background:linear-gradient(150deg,rgba(255,255,255,.92),rgba(255,255,255,.55));
+  border:1px solid rgba(255,255,255,.9);
+  box-shadow:0 4px 14px rgba(23,43,77,.10),inset 0 1px 0 #fff}
+.iconbtn:active{background:rgba(255,255,255,.7)}
+.iconbtn svg{width:19px;height:19px}
+
+/* 进度 → 玻璃胶囊 */
+.progwrap{position:static;background:transparent;padding:0 14px 10px;color:var(--ink)}
+.progwrap .prog{display:none}
+.progwrap .progmeta{background:linear-gradient(152deg,var(--glass-hi),var(--glass-lo));
+  -webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);
+  border:1px solid rgba(255,255,255,.8);border-radius:20px;padding:12px 16px;
+  box-shadow:0 8px 24px rgba(23,43,77,.10),inset 0 1px 0 #fff;
+  display:flex;align-items:center;gap:12px;font-size:12px;color:var(--ink2);margin:0}
+.progwrap .progmeta span:first-child{order:2;flex:1;color:var(--ink);font-weight:600}
+.progwrap .progmeta span:last-child{order:3;font-variant-numeric:tabular-nums;color:var(--ink)}
+
+/* 提示条 */
+.pad{padding:0 14px calc(104px + env(safe-area-inset-bottom))}
+.banner{background:linear-gradient(152deg,rgba(255,255,255,.72),rgba(255,255,255,.46));
+  -webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);
+  border:1px solid rgba(255,255,255,.8);border-radius:18px;color:var(--ink2);
+  box-shadow:0 6px 18px rgba(23,43,77,.07),inset 0 1px 0 #fff;
+  padding:10px 13px;gap:9px;margin-bottom:10px}
+.banner .bi{fill:#1F3A5F;opacity:.5;width:16px;height:16px;flex:0 0 16px;margin-top:1px}
+.banner p{font-size:11.5px;line-height:1.55}
+
+/* 卡片 */
+.card{background:linear-gradient(152deg,var(--glass-hi),var(--glass-lo));
+  -webkit-backdrop-filter:blur(14px) saturate(160%);backdrop-filter:blur(14px) saturate(160%);
+  border:1px solid rgba(255,255,255,.85);border-radius:28px;
+  box-shadow:0 12px 34px rgba(23,43,77,.11),inset 0 1px 0 rgba(255,255,255,.98);
+  margin-bottom:12px}
+.cardhd{padding:15px 16px 10px;gap:11px}
+.avatar{width:40px;height:40px;flex:0 0 40px;border-radius:15px;font-size:15px;font-weight:700;
+  background:linear-gradient(150deg,#2C5282,#1F3A5F);
+  box-shadow:0 6px 16px rgba(31,58,95,.28),inset 0 1px 0 rgba(255,255,255,.28)}
+.card.optional .avatar{background:linear-gradient(150deg,#0AAE57,#07C160)}
+.cardhd h2{font-size:15.5px;font-weight:700;color:var(--ink);letter-spacing:-.1px}
+.cardhd .sub{font-size:11.5px;color:var(--ink2);margin-top:1px}
+.chip{background:rgba(31,58,95,.07);color:#3A4C68;border-radius:10px;font-size:11px;padding:5px 10px}
+.chip.full{background:rgba(7,193,96,.16);color:#06803F}
+
+/* 动作行 */
+.rows{padding:0 16px 14px}
+.erow{padding:9px 0;gap:11px;border-radius:14px;position:relative}
+.erow:active{background:rgba(255,255,255,.35)}
+.erow::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;
+  background:rgba(31,58,95,.06)}
+.erow:last-child::after,.erow.last::after{display:none}
+.erow .ord{flex:0 0 24px;margin-top:0;align-self:center;font-size:10.5px;color:var(--ink2)}
+.cbx{flex:0 0 24px;width:24px;height:24px;margin-top:0;align-self:center;border-radius:8px;
+  border:1.5px solid rgba(31,58,95,.22);background:rgba(255,255,255,.6);
+  box-shadow:inset 0 1px 0 #fff}
+.cbx::after{width:8px;height:4.5px;border-width:0 0 2.2px 2.2px}
+.erow.done .cbx{background:linear-gradient(150deg,#07C160,#0AAE57);border-color:transparent;
+  box-shadow:0 4px 12px rgba(7,193,96,.42),inset 0 1px 0 rgba(255,255,255,.45)}
+.erow .body{padding-right:74px}
+.erow .nm span.t{font-size:14px;font-weight:600;color:var(--ink)}
+.meta{font-size:11.5px;color:var(--ink2);margin-top:2px}
+.meta .w{color:#1F3A5F;font-weight:700}
+.erow.done .nm span.t,.erow.done .meta{color:#9AA6B6}
+.erow.done .meta .w{color:#9AA6B6}
+.tag{background:rgba(255,183,77,.24);color:#8A5A00;border-radius:6px;font-size:10px;padding:2px 6px}
+.tbtn{position:absolute;right:40px;top:50%;transform:translateY(-50%);
+  width:24px;height:24px;margin:0;padding:0;border-radius:50%;font-size:0;
+  border:1px solid rgba(255,255,255,.92);background:rgba(255,255,255,.62);
+  color:#1F3A5F;box-shadow:0 4px 12px rgba(23,43,77,.10),inset 0 1px 0 #fff}
+.tbtn svg{display:none}
+.tbtn::after{content:"i";font:700 12px/1 Georgia,serif;color:rgba(31,58,95,.72)}
+.tbtn.open{background:rgba(31,58,95,.10)}
+.note{position:relative;z-index:1;background:rgba(255,255,255,.72);border-left:3px solid #1F3A5F;
+  color:var(--ink2);border-radius:0 12px 12px 0;margin-top:8px;padding:10px 12px;
+  font-size:12px;line-height:1.6}
+.sep{display:none}
+
+/* 行右侧播放键 */
+.dbtn{position:absolute;right:0;top:50%;transform:translateY(-50%);
+  width:32px;height:32px;border-radius:50%;border:1px solid rgba(255,255,255,.92);
+  background:rgba(255,255,255,.62);box-shadow:0 4px 12px rgba(23,43,77,.10),inset 0 1px 0 #fff;
+  display:flex;align-items:center;justify-content:center;padding:0;margin:0}
+.dbtn::after{content:"";width:0;height:0;border-left:8px solid rgba(31,58,95,.72);
+  border-top:5px solid transparent;border-bottom:5px solid transparent;margin-left:2px}
+.dbtn:active{background:rgba(255,255,255,.9)}
+
+/* 底栏 → 胶囊导航 */
+.navbar{display:none!important}
+.tabbar{position:fixed;left:14px;right:14px;bottom:calc(14px + env(safe-area-inset-bottom));
+  z-index:30;height:66px;border-radius:33px;display:flex;align-items:center;
+  justify-content:space-around;padding:0 4px;
+  background:linear-gradient(152deg,rgba(255,255,255,.86),rgba(255,255,255,.55));
+  -webkit-backdrop-filter:blur(26px) saturate(180%);backdrop-filter:blur(26px) saturate(180%);
+  border:1px solid rgba(255,255,255,.85);
+  box-shadow:0 14px 34px rgba(23,43,77,.16),inset 0 1px 0 #fff}
+.tabbar .tb{width:76px;height:52px;border-radius:22px;border:0;background:transparent;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+  font:600 9.5px/1 inherit;font-family:inherit;color:var(--ink2)}
+.tabbar .tb svg{width:19px;height:19px;fill:currentColor}
+.tabbar .tb.on{background:linear-gradient(152deg,rgba(255,255,255,.98),rgba(255,255,255,.72));
+  color:#1F3A5F;box-shadow:0 6px 16px rgba(23,43,77,.16),inset 0 1px 0 #fff,
+  0 0 0 1px rgba(255,255,255,.9)}
+
+/* 弹层 */
+.sheet{background:linear-gradient(152deg,rgba(255,255,255,.94),rgba(255,255,255,.86));
+  -webkit-backdrop-filter:blur(28px) saturate(170%);backdrop-filter:blur(28px) saturate(170%);
+  border:1px solid rgba(255,255,255,.9);border-radius:34px 34px 0 0;
+  box-shadow:0 -10px 40px rgba(16,28,46,.22),inset 0 1px 0 #fff}
+.sheet h3{color:var(--ink);font-size:17px}
+.sheet .hint{color:var(--ink2)}
+.wgrid button{border-radius:16px;background:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.9);color:var(--ink)}
+.wgrid button.cur{background:linear-gradient(150deg,#2C5282,#1F3A5F);color:#fff;border-color:transparent}
+.menu li{color:var(--ink)}
+.menu li svg{fill:var(--ink2)}
+.snack{bottom:calc(96px + env(safe-area-inset-bottom))}
+
+/* 切周动效 */
+@keyframes swl{from{opacity:.35;transform:translateX(26px)}to{opacity:1;transform:none}}
+@keyframes swr{from{opacity:.35;transform:translateX(-26px)}to{opacity:1;transform:none}}
+.sw-l{animation:swl .26s cubic-bezier(.2,0,0,1)}
+.sw-r{animation:swr .26s cubic-bezier(.2,0,0,1)}
+
+/* ================= 饮食页跟随玻璃 ================= */
+.fview{background:
+    radial-gradient(62% 42% at 2% -10%,rgba(31,58,95,.42),transparent 68%),
+    radial-gradient(56% 38% at 108% 2%,rgba(7,193,96,.38),transparent 66%),
+    radial-gradient(72% 46% at 48% 114%,rgba(96,110,255,.34),transparent 70%),
+    radial-gradient(46% 32% at 94% 60%,rgba(31,214,168,.32),transparent 68%),
+    linear-gradient(168deg,#EBF2FB 0%,#E6EEF8 48%,#EFF4FA 100%)}
+.fhead{position:static;margin:6px 14px 10px;padding:8px 8px 8px 6px;border-radius:26px;
+  background:linear-gradient(152deg,var(--glass-hi),var(--glass-lo));
+  -webkit-backdrop-filter:blur(26px) saturate(180%);backdrop-filter:blur(26px) saturate(180%);
+  border:1px solid rgba(255,255,255,.82);color:var(--ink);
+  box-shadow:0 10px 30px rgba(23,43,77,.13),inset 0 1px 0 #fff}
+.fhead .t{font-size:20px;font-weight:700;letter-spacing:-.3px}
+.fhead .back{color:#1F3A5F}
+.fhead .back:active{background:rgba(31,58,95,.08)}
+.fhead .iconbtn{color:#1F3A5F}
+.fbody{padding:0 14px calc(196px + env(safe-area-inset-bottom))}
+.fcard{background:linear-gradient(152deg,var(--glass-hi),var(--glass-lo));
+  -webkit-backdrop-filter:blur(14px) saturate(160%);backdrop-filter:blur(14px) saturate(160%);
+  border:1px solid rgba(255,255,255,.85);border-radius:28px;
+  box-shadow:0 12px 34px rgba(23,43,77,.11),inset 0 1px 0 #fff;padding:16px}
+.fcard h4{font-size:12px;color:var(--ink2);margin-bottom:10px}
+.fkcal b{color:var(--ink)}
+.fkcal span{color:var(--ink2)}
+.fmac div{background:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.9);
+  border-radius:16px;box-shadow:inset 0 1px 0 #fff}
+.fmac span{color:var(--ink2)}
+.fmac b{color:var(--ink)}
+.fmeal{background:linear-gradient(152deg,rgba(255,255,255,.78),rgba(255,255,255,.48));
+  -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
+  border:1px solid rgba(255,255,255,.85);border-radius:24px;
+  box-shadow:0 8px 24px rgba(23,43,77,.08),inset 0 1px 0 #fff}
+.fmeal .mh{border-bottom:1px solid rgba(31,58,95,.07);color:var(--ink)}
+.fitem{border-bottom:1px solid rgba(31,58,95,.06);color:var(--ink)}
+.fitem .v{color:var(--ink2)}
+.fitem .del{color:rgba(31,58,95,.35)}
+.fempty{color:var(--ink2)}
+.fab{left:14px;right:14px;bottom:calc(92px + env(safe-area-inset-bottom));
+  border-radius:20px;background:linear-gradient(152deg,#0AAE57,#07C160);
+  box-shadow:0 12px 30px rgba(7,193,96,.42),inset 0 1px 0 rgba(255,255,255,.45)}
+.tabbar{z-index:36}
+/* 弹层更透一点 */
+.sheet{background:linear-gradient(152deg,rgba(255,255,255,.88),rgba(255,255,255,.74));
+  -webkit-backdrop-filter:blur(30px) saturate(180%);backdrop-filter:blur(30px) saturate(180%)}
+
 </style>
 </head>
 <body>
+<div class="bgwrap"></div>
 
 <header class="appbar">
   <div class="titles">
@@ -1046,7 +1236,7 @@ function render(){
           +'<div class="meta"><span class="w">'+esc(wt)+'</span> · '+esc(st)+' × '
           +esc(it[5]).replace(/\n/g," / ")+' · 休息 '+esc(it[6])+'</div>'
           +'<button class="tbtn">要点'+CHEV+'</button>'
-          +'<button class="tbtn dbtn" data-demo="'+d+'|'+j+'">示范</button>'
+          +'<button class="dbtn" data-demo="'+d+'|'+j+'" aria-label="看示范"></button>'
           +'<div class="note">'+esc(it[7])+'</div>'
           +'</div></div>';
       if(j<list.length-1)html+='<div class="sep"></div>';
@@ -1161,6 +1351,71 @@ function snack(m){
   var s=$("snack");s.textContent=m;s.classList.add("on");
   clearTimeout(stmr);stmr=setTimeout(function(){s.classList.remove("on");},2400);
 }
+
+/* ================= 液态玻璃：底栏 / 滑动切周 ================= */
+(function(){
+  var bar=document.createElement("nav");
+  bar.className="tabbar";
+  bar.innerHTML=
+    '<button class="tb on" data-go="plan"><svg viewBox="0 0 24 24"><path d="M4 6h2v2H4zm4 0h12v2H8zM4 11h2v2H4zm4 0h12v2H8zM4 16h2v2H4zm4 0h12v2H8z"/></svg>计划</button>'+
+    '<button class="tb" data-go="food"><svg viewBox="0 0 24 24"><path d="M11 9H9V2H7v7H5V2H3v7c0 2.12 1.66 3.84 3.75 3.97V22h2.5v-9.03C11.34 12.84 13 11.12 13 9V2h-2v7zm5-3v8h2.5v8H21V2c-2.76 0-5 2.24-5 4z"/></svg>饮食</button>'+
+    '<button class="tb" data-go="me"><svg viewBox="0 0 24 24"><path d="M12 12a4 4 0 100-8 4 4 0 000 8zm0 2c-3.6 0-7 1.8-7 4v2h14v-2c0-2.2-3.4-4-7-4z"/></svg>我的</button>';
+  document.body.appendChild(bar);
+
+  function setTab(k){
+    var bs=bar.querySelectorAll(".tb");
+    for(var i=0;i<bs.length;i++) bs[i].classList.toggle("on",bs[i].getAttribute("data-go")===k);
+  }
+  bar.addEventListener("click",function(e){
+    var b=e.target.closest(".tb"); if(!b) return;
+    var k=b.getAttribute("data-go");
+    if(k==="plan"){ if(typeof fclose==="function") fclose(); setTab("plan"); window.scrollTo({top:0,behavior:"smooth"}); }
+    if(k==="food"){ if(typeof fopen==="function") fopen(); setTab("food"); }
+    if(k==="me"){ setTab("me"); var m=document.getElementById("sheetMenu"); var s=document.getElementById("scrim"); if(m&&s){s.classList.add("on");m.classList.add("on");} }
+  });
+  document.getElementById("scrim").addEventListener("click",function(){
+    if(typeof fclose==="function") fclose();
+    setTab("plan");
+  });
+  // 从顶栏图标进饮食页时同步高亮
+  var _fopen=fopen, _fclose=fclose;
+  fopen=function(){ _fopen(); setTab("food"); };
+  fclose=function(){ _fclose(); setTab("plan"); };
+  var bf=document.getElementById("btnFood");
+  if(bf) bf.onclick=function(){ fopen(); };
+  var fb=document.getElementById("fBack");
+  if(fb) fb.onclick=function(){ fclose(); };
+
+  // 点标题选周次
+  var wt=document.getElementById("wkTitle");
+  if(wt){ wt.style.cursor="pointer"; wt.addEventListener("click",function(){ document.getElementById("btnPick").click(); }); }
+
+  // 左右滑动切周
+  var sx=0,sy=0,st=0;
+  document.addEventListener("touchstart",function(e){
+    if(e.touches.length!==1){st=0;return;}
+    if(document.querySelector(".sheet.on")){st=0;return;}
+    var fv=document.getElementById("foodView");
+    if(fv&&fv.classList.contains("on")){st=0;return;}
+    var t=e.touches[0]; sx=t.clientX; sy=t.clientY; st=Date.now();
+  },{passive:true});
+  document.addEventListener("touchend",function(e){
+    if(!st) return; var t=e.changedTouches[0], dx=t.clientX-sx, dy=t.clientY-sy, dt=Date.now()-st; st=0;
+    if(dt>800) return;
+    if(Math.abs(dx)<68 || Math.abs(dy)>64) return;
+    var app=document.getElementById("app"); if(!app) return;
+    if(dx<0){ if(S.week>=12) return; S.week++; render(); }
+    else{ if(S.week<=1) return; S.week--; render(); }
+    app.classList.remove("sw-l","sw-r"); void app.offsetWidth;
+    app.classList.add(dx<0?"sw-l":"sw-r");
+    window.scrollTo({top:0});
+  },{passive:true});
+
+  if(!localStorage.getItem("glass_hint")){
+    setTimeout(function(){ try{ snack("左右滑动可以切换周次"); localStorage.setItem("glass_hint","1"); }catch(e){} },1600);
+  }
+})();
+
 render();
 setTimeout(function(){for(var k in GIF){try{var _im=new Image();_im.src=GIF[k];}catch(e){}}},1200);
 </script>
