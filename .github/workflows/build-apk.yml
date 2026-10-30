@@ -22,6 +22,22 @@ jobs:
           distribution: "temurin"
           java-version: "17"
 
+      # 关键：固定 debug 证书，否则每次构建签名都不同，装不上只能卸载重装
+      - name: 固定签名证书
+        run: |
+          mkdir -p "$HOME/.android"
+          if [ -n "${{ secrets.DEBUG_KEYSTORE_B64 }}" ]; then
+            echo "${{ secrets.DEBUG_KEYSTORE_B64 }}" | base64 -d > "$HOME/.android/debug.keystore"
+            echo "→ 使用 Secrets 中的证书"
+          else
+            cp signing/debug.keystore "$HOME/.android/debug.keystore"
+            echo "→ 使用仓库内置证书 signing/debug.keystore"
+          fi
+          keytool -list -keystore "$HOME/.android/debug.keystore" -storepass android | head -8
+          echo "证书 SHA-256 指纹："
+          keytool -list -v -keystore "$HOME/.android/debug.keystore" -storepass android \
+            | grep -i "SHA256:" | head -1
+
       - name: 安装依赖
         run: npm install
 
@@ -31,6 +47,15 @@ jobs:
       - name: 套用自适应图标
         run: cp -r resources/android/res/. android/app/src/main/res/
 
+      - name: 校验图标已覆盖
+        run: |
+          echo "--- 目标目录内容 ---"
+          ls -l android/app/src/main/res/mipmap-xxxhdpi/ android/app/src/main/res/mipmap-xxhdpi/ android/app/src/main/res/mipmap-anydpi-v26/
+          echo "--- 自适应图标声明 ---"
+          cat android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml
+          echo "--- 清单里的图标引用 ---"
+          grep -o 'android:icon="[^"]*"' android/app/src/main/AndroidManifest.xml
+
       - name: 同步网页资源
         run: npx cap sync
 
@@ -39,6 +64,13 @@ jobs:
           cd android
           chmod +x gradlew
           ./gradlew assembleDebug --no-daemon --stacktrace
+
+      - name: 校验 APK 签名
+        run: |
+          APK=$(ls android/app/build/outputs/apk/debug/*.apk | head -1)
+          echo "APK: $APK"
+          APKSIGNER=$(ls $ANDROID_HOME/build-tools/*/apksigner | tail -1)
+          "$APKSIGNER" verify --print-certs "$APK" | head -6
 
       - name: 上传 APK
         uses: actions/upload-artifact@v4
