@@ -472,6 +472,11 @@ html{background:#E7EFF9}
 /* 独立合成层，避免每次重渲染重新计算背景模糊造成抖动 */
 .appbar,.tabbar,.fhead{transform:translateZ(0);backface-visibility:hidden;will-change:transform}
 
+
+/* 切周动画期间关掉固定栏的模糊：背景在动，模糊每帧重算会闪 */
+body.switching .tabbar,body.switching .appbar,body.switching .fhead{
+  -webkit-backdrop-filter:none!important;backdrop-filter:none!important;
+  background:rgba(255,255,255,.94)!important}
 /* ================= 饮食页跟随玻璃 ================= */
 .fview{background:
     radial-gradient(62% 42% at 2% -10%,rgba(31,58,95,.42),transparent 68%),
@@ -1422,9 +1427,12 @@ function snack(m){
     var app=document.getElementById("app"); if(!app) return;
     if(dx<0){ if(S.week>=12) return; S.week++; render(); }
     else{ if(S.week<=1) return; S.week--; render(); }
+    document.body.classList.add("switching");
     app.classList.remove("sw-l","sw-r"); void app.offsetWidth;
     app.classList.add(dx<0?"sw-l":"sw-r");
     window.scrollTo({top:0});
+    clearTimeout(window.__swT);
+    window.__swT=setTimeout(function(){document.body.classList.remove("switching");},340);
   },{passive:true});
 
   if(!localStorage.getItem("glass_hint")){
