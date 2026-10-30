@@ -28,6 +28,9 @@ jobs:
       - name: 添加安卓平台
         run: npx cap add android
 
+      - name: 套用自适应图标
+        run: cp -r resources/android/res/. android/app/src/main/res/
+
       - name: 同步网页资源
         run: npx cap sync
 
