@@ -62,6 +62,33 @@ jobs:
           echo "--- 清单里的图标引用 ---"
           grep -o 'android:icon="[^"]*"' android/app/src/main/AndroidManifest.xml
 
+      - name: 启用 edge-to-edge（网页铺到系统栏底下）
+        run: |
+          MAIN=$(find android/app/src/main/java -name MainActivity.java | head -1)
+          echo "MainActivity: $MAIN"
+          python3 - "$MAIN" <<'PY'
+          import sys, re
+          p = sys.argv[1]
+          s = open(p).read()
+          if "setDecorFitsSystemWindows" in s:
+              print("已存在，跳过"); sys.exit(0)
+          s = s.replace("import com.getcapacitor.BridgeActivity;",
+                        "import com.getcapacitor.BridgeActivity;\n"
+                        "import android.os.Bundle;\n"
+                        "import androidx.core.view.WindowCompat;")
+          s = re.sub(r"public class MainActivity extends BridgeActivity \{\s*\}",
+                     "public class MainActivity extends BridgeActivity {\n"
+                     "    @Override\n"
+                     "    public void onCreate(Bundle savedInstanceState) {\n"
+                     "        super.onCreate(savedInstanceState);\n"
+                     "        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);\n"
+                     "    }\n"
+                     "}", s)
+          open(p, "w").write(s)
+          print("patched:", "setDecorFitsSystemWindows" in open(p).read())
+          PY
+          cat "$MAIN"
+
       - name: 同步网页资源
         run: npx cap sync
 

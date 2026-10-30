@@ -315,7 +315,9 @@ body{
 
 /* ================= 液态玻璃主题（覆盖层） ================= */
 :root{--ink:#16233A;--ink2:#5D6E88;--glass-hi:rgba(255,255,255,.82);--glass-lo:rgba(255,255,255,.48)}
-body{background:#E7EFF9;color:var(--ink);min-height:100vh}
+body{background:#E7EFF9;color:var(--ink);min-height:100vh;
+  padding-top:max(env(safe-area-inset-top),34px);
+  padding-bottom:max(env(safe-area-inset-bottom),20px)}
 html{background:#E7EFF9}
 .bgwrap{position:fixed;inset:0;z-index:-1;pointer-events:none;
   background:
@@ -427,7 +429,7 @@ html{background:#E7EFF9}
 
 /* 底栏 → 胶囊导航 */
 .navbar{display:none!important}
-.tabbar{position:fixed;left:14px;right:14px;bottom:calc(14px + env(safe-area-inset-bottom));
+.tabbar{position:fixed;left:14px;right:14px;bottom:calc(14px + max(env(safe-area-inset-bottom),20px));
   z-index:30;height:66px;border-radius:33px;display:flex;align-items:center;
   justify-content:space-around;padding:0 4px;
   background:linear-gradient(152deg,rgba(255,255,255,.86),rgba(255,255,255,.55));
