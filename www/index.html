@@ -313,6 +313,32 @@ body{
 }
 .snack.on{opacity:1;transform:translateY(0)}
 
+/* ---- 饮食页：日期条 / 餐次详情 ---- */
+.fab{bottom:calc(116px + max(env(safe-area-inset-bottom),20px))!important}
+.fbody{padding-bottom:calc(220px + max(env(safe-area-inset-bottom),20px))!important}
+#fDetailSheet{max-height:80vh}
+
+.fdatebar{display:flex;align-items:center;gap:8px;margin:-4px 0 12px;position:relative}
+.fdbtn{width:34px;height:34px;border-radius:12px;border:1px solid rgba(255,255,255,.9);
+  background:rgba(255,255,255,.6);color:#1F3A5F;font-size:17px;line-height:1;
+  box-shadow:inset 0 1px 0 #fff}
+.fdbtn:active{background:rgba(255,255,255,.95)}
+.fdlabel{flex:1;height:34px;border:0;background:transparent;color:#16233A;
+  font:600 14px/1 inherit;font-family:inherit}
+#fdPick{position:absolute;left:50%;bottom:0;width:1px;height:1px;opacity:0;border:0;padding:0}
+.fdlabel:active{opacity:.6}
+.mchev{color:var(--on-surface-variant);font-weight:400;margin-left:4px}
+.fdish{background:rgba(255,255,255,.55);border:1px solid rgba(255,255,255,.9);
+  border-radius:16px;padding:11px 13px;margin-bottom:10px}
+.fdh{display:flex;justify-content:space-between;align-items:baseline;font-size:13.5px;
+  font-weight:600;color:#16233A;margin-bottom:6px}
+.fdh small{font-weight:400;color:#5D6E88;font-size:11px;margin-left:6px}
+.fdel{border:0;background:transparent;color:rgba(31,58,95,.35);font-size:14px;margin-left:8px}
+.fdi{display:flex;gap:8px;font-size:12px;color:#5D6E88;padding:3px 0}
+.fdi span:first-child{flex:1;color:#16233A}
+.fdi span:nth-child(2){width:56px;text-align:right;font-variant-numeric:tabular-nums}
+.fdi span:last-child{width:64px;text-align:right;font-variant-numeric:tabular-nums;color:#1F3A5F}
+
 /* ================= 液态玻璃主题（覆盖层） ================= */
 :root{--ink:#16233A;--ink2:#5D6E88;--glass-hi:rgba(255,255,255,.82);--glass-lo:rgba(255,255,255,.48)}
 body{background:#E7EFF9;color:var(--ink);min-height:100vh;
@@ -640,6 +666,13 @@ body.switching .tabbar,body.switching .appbar,body.switching .fhead{
   </div>
 </div>
 
+<div class="sheet" id="fDetailSheet">
+  <div class="grab"></div>
+  <h3 id="fdTitle">餐次详情</h3>
+  <div class="hint" id="fdSub"></div>
+  <div class="mstep" id="fdBody"></div>
+  <button class="mbtn ghost" id="fdClose" style="margin:10px 20px 0;width:calc(100% - 40px)">收起</button>
+</div>
 <div class="snack" id="snack"></div>
 <input type="file" id="fileIn" accept=".json,application/json" style="display:none">
 
@@ -981,12 +1014,27 @@ function festimate(queries) {
 /* ---------- 视图 ---------- */
 function fopen() { $("foodView").classList.add("on"); frender(); }
 function fclose() { $("foodView").classList.remove("on"); }
+var FV = { date: '' };
+function fdayLabel(ds) {
+  var t = fdate();
+  var p = ds.split('-');
+  var s = (+p[1]) + '/' + (+p[2]);
+  if (ds === t) return '今天 · ' + s;
+  var d = new Date(ds + 'T00:00:00');
+  return s + ' 周' + '日一二三四五六'.charAt(d.getDay());
+}
 function frender() {
-  var day = FS.logs[fdate()] || [];
+  var vd = FV.date || fdate();
+  var day = FS.logs[vd] || [];
   var tot = fsum(day);
   var pct = Math.min(100, Math.round(tot.k * 100 / (FS.target || 2800)));
   var over = tot.k > FS.target;
-  var h = '<section class="fcard"><h4>今日摄入</h4>'
+  var h = '<section class="fcard"><div class="fdatebar">'
+    + '<button class="fdbtn" data-shift="-1">‹</button>'
+    + '<button class="fdlabel" id="fdLabel">' + fdayLabel(vd) + '</button>'
+    + '<button class="fdbtn" data-shift="1">›</button>'
+    + '<input type="date" id="fdPick" value="' + vd + '" max="' + fdate() + '">'
+    + '</div>'
     + '<div class="fkcal"><b>' + tot.k + '</b><span>/ ' + FS.target + ' kcal</span></div>'
     + '<div class="fbar' + (over ? ' over' : '') + '"><i style="width:' + pct + '%"></i></div>'
     + '<div class="fmac"><div><span>蛋白质</span><b>' + tot.p + ' g</b></div>'
@@ -1002,15 +1050,16 @@ function frender() {
   h += '<section class="fcard"><h4>近 7 天（kcal）</h4><div style="display:flex;gap:6px;align-items:flex-end;height:64px">';
   days.forEach(function (x) {
     var hp = x.k ? Math.max(6, Math.round(x.k * 56 / maxK)) : 3;
-    h += '<div style="flex:1;text-align:center"><div style="height:' + hp + 'px;background:'
-      + (x.ds === fdate() ? 'var(--primary)' : 'var(--primary-container)')
+    h += '<div style="flex:1;text-align:center;cursor:pointer" data-d="' + x.ds + '"><div style="height:' + hp + 'px;background:'
+      + (x.ds === vd ? 'var(--primary)' : 'var(--primary-container)')
       + ';border-radius:4px 4px 0 0"></div>'
       + '<div style="font-size:10px;color:var(--on-surface-variant);margin-top:4px">'
       + (x.d.getMonth() + 1) + '/' + x.d.getDate() + '</div></div>';
   });
   h += '</div></section>';
   if (!day.length) {
-    h += '<div class="fempty">今天还没记东西<br><br>点下面「记一餐」，拍张照试试</div>';
+    h += '<div class="fempty">' + (vd === fdate() ? '今天还没记东西' : '这天没有记录')
+      + '<br><br>' + (vd === fdate() ? '点下面「记一餐」，拍张照试试' : '可以点上面的日期换一天') + '</div>';
   } else {
     var meals = {};
     day.forEach(function (r) { (meals[r.meal] = meals[r.meal] || []).push(r); });
@@ -1019,7 +1068,8 @@ function frender() {
     Object.keys(meals).forEach(function (m) { if (order.indexOf(m) < 0) used.push(m); });
     used.forEach(function (m) {
       var list = meals[m], mk = fsum(list).k;
-      h += '<div class="fmeal"><div class="mh"><div>' + m + '<small>' + list.length + ' 项</small></div><div class="k">' + mk + ' kcal</div></div>';
+      h += '<div class="fmeal"><div class="mh" data-meal="' + m + '"><div>' + m + '<small>' + list.length + ' 项</small></div>'
+        + '<div class="k">' + mk + ' kcal <span class="mchev">›</span></div></div>';
       list.forEach(function (r) {
         h += '<div class="fitem"><div class="n">' + esc(r.dish) + '<i>' + esc((r.items || []).map(function (x) { return x.n; }).join("、")) + '</i></div>'
           + '<div class="v">' + r.k + ' kcal</div>'
@@ -1219,6 +1269,69 @@ function fsClose() {
   $("scrim").classList.remove("on");
   $("foodSetSheet").classList.remove("on");
 }
+
+/* ---- 日期切换 / 柱子跳转 / 餐次详情 ---- */
+function fshift(step) {
+  var d = new Date((FV.date || fdate()) + 'T00:00:00');
+  d.setDate(d.getDate() + step);
+  var ds = fdate(d);
+  if (ds > fdate()) return;
+  FV.date = ds; frender();
+}
+function fdetail(meal) {
+  var vd = FV.date || fdate();
+  var list = (FS.logs[vd] || []).filter(function (r) { return r.meal === meal; });
+  $("fdTitle").textContent = meal + ' · ' + fsum(list).k + ' kcal';
+  $("fdSub").textContent = fdayLabel(vd) + ' · ' + list.length + ' 条记录';
+  var h = '';
+  list.forEach(function (r) {
+    h += '<div class="fdish"><div class="fdh"><div>' + esc(r.dish)
+      + '<small>' + r.t + '</small></div><div>' + r.k + ' kcal'
+      + '<button class="fdel" data-rid="' + r.id + '">✕</button></div></div>';
+    (r.items || []).forEach(function (x) {
+      h += '<div class="fdi"><span>' + esc(x.n) + '</span><span>' + x.w + ' g</span>'
+        + '<span>' + x.k + ' kcal</span></div>';
+    });
+    h += '</div>';
+  });
+  if (!list.length) h = '<div class="fempty">还没有记录</div>';
+  $("fdBody").innerHTML = h;
+  $("scrim").classList.add("on");
+  $("fDetailSheet").classList.add("on");
+  var dels = $("fdBody").querySelectorAll("[data-rid]");
+  for (var i = 0; i < dels.length; i++) {
+    dels[i].onclick = function () {
+      var id = this.getAttribute("data-rid");
+      var arr = FS.logs[vd] || [];
+      FS.logs[vd] = arr.filter(function (r) { return String(r.id) !== id; });
+      fsave(); fdetail(meal); frender();
+    };
+  }
+}
+(function () {
+  var fb = document.getElementById("fBody");
+  fb.addEventListener("click", function (e) {
+    var sh = e.target.closest("[data-shift]");
+    if (sh) { fshift(+sh.getAttribute("data-shift")); return; }
+    if (e.target.closest("#fdLabel")) {
+      var p = document.getElementById("fdPick");
+      if (p) { try { p.showPicker(); } catch (err) { p.click(); } }
+      return;
+    }
+    var bar = e.target.closest("[data-d]");
+    if (bar) { FV.date = bar.getAttribute("data-d"); frender(); return; }
+    var mh = e.target.closest("[data-meal]");
+    if (mh) { fdetail(mh.getAttribute("data-meal")); return; }
+  });
+  var pick = document.getElementById("fdPick");
+  if (pick) pick.addEventListener("change", function () {
+    if (this.value) { FV.date = this.value; frender(); }
+  });
+  document.getElementById("fdClose").onclick = function () {
+    $("scrim").classList.remove("on");
+    $("fDetailSheet").classList.remove("on");
+  };
+})();
 
 document.getElementById("btnFood").onclick = fopen;
 $("fBack").onclick = fclose;
