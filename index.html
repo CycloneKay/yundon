@@ -339,6 +339,17 @@ body{
 .fdi span:nth-child(2){width:56px;text-align:right;font-variant-numeric:tabular-nums}
 .fdi span:last-child{width:64px;text-align:right;font-variant-numeric:tabular-nums;color:#1F3A5F}
 
+.fdm{font-size:11px;color:#5D6E88;padding:0 0 6px;margin-top:-2px}
+.feditb{border:0;background:rgba(31,58,95,.07);color:#1F3A5F;font-size:11px;
+  border-radius:8px;padding:3px 8px;margin-left:6px}
+.fen{font-size:15px;font-weight:700;color:#16233A;padding:0 20px 8px}
+.feh{font-size:11.5px;color:#5D6E88;padding:12px 20px 6px}
+.fe-row,.ferow{display:flex;align-items:center;gap:10px;padding:0 20px 8px}
+.ferow input{flex:1;border:1px solid rgba(31,58,95,.16);border-radius:10px;
+  padding:9px 12px;font:14px/1 inherit;font-family:inherit;background:#fff;color:#16233A}
+.ferow span{width:56px;font-size:12px;color:#5D6E88}
+.fehint{font-size:11px;color:#5D6E88;padding:8px 20px 0;line-height:1.6}
+
 /* ================= 液态玻璃主题（覆盖层） ================= */
 :root{--ink:#16233A;--ink2:#5D6E88;--glass-hi:rgba(255,255,255,.82);--glass-lo:rgba(255,255,255,.48)}
 body{background:#E7EFF9;color:var(--ink);min-height:100vh;
@@ -798,7 +809,7 @@ var FOODDB=[["丁桂鱼",157.0,29.7,0.2,4.2],["丁香鱼（干）",196.0,37.5,4.
 
 /* ================= 饮食记录模块 ================= */
 var FKEY = "fitness12w_food_v1";
-var FS = { target: 2800, base: "https://api.deepseek.com", model: "deepseek-v4-flash-vision-exp", key: "", logs: {}, aidb: {} };
+var FS = { target: 2800, base: "https://api.deepseek.com", model: "deepseek-v4-flash-vision-exp", key: "", logs: {}, aidb: {}, over: {} };
 (function () {
   try {
     var r = localStorage.getItem(FKEY);
@@ -807,7 +818,7 @@ var FS = { target: 2800, base: "https://api.deepseek.com", model: "deepseek-v4-f
       if (o) {
         FS.target = o.target || FS.target; FS.base = o.base || FS.base;
         FS.model = o.model || FS.model; FS.key = o.key || "";
-        FS.logs = o.logs || {}; FS.aidb = o.aidb || {};
+        FS.logs = o.logs || {}; FS.aidb = o.aidb || {}; FS.over = o.over || {};
       }
     }
   } catch (e) {}
@@ -905,6 +916,8 @@ function fmatch(q) {
 }
 /* 解析一条组成：返回 {n,v:[k,p,c,f],src} */
 function fresolve(q) {
+  var ov = FS.over && FS.over[fnorm(q || "")];
+  if (ov) return { n: q, v: ov, src: "手改" };
   var h = fmatch(q);
   if (h) return { n: h[0], v: [h[1], h[2], h[3], h[4]], src: "库" };
   var a = FS.aidb && FS.aidb[fnorm(q)];
@@ -1278,19 +1291,28 @@ function fshift(step) {
   if (ds > fdate()) return;
   FV.date = ds; frender();
 }
+function fper100(it) {
+  var w = Number(it.w) || 0;
+  if (!w) return [0, 0, 0, 0];
+  return [Math.round(it.k * 100 / w), +(it.p * 100 / w).toFixed(1),
+          +(it.c * 100 / w).toFixed(1), +(it.f * 100 / w).toFixed(1)];
+}
 function fdetail(meal) {
   var vd = FV.date || fdate();
   var list = (FS.logs[vd] || []).filter(function (r) { return r.meal === meal; });
-  $("fdTitle").textContent = meal + ' · ' + fsum(list).k + ' kcal';
-  $("fdSub").textContent = fdayLabel(vd) + ' · ' + list.length + ' 条记录';
+  var tt = fsum(list);
+  $("fdTitle").textContent = meal + ' · ' + tt.k + ' kcal';
+  $("fdSub").textContent = fdayLabel(vd) + ' · 蛋白 ' + tt.p + 'g · 碳水 ' + tt.c + 'g · 脂肪 ' + tt.f + 'g';
   var h = '';
   list.forEach(function (r) {
     h += '<div class="fdish"><div class="fdh"><div>' + esc(r.dish)
       + '<small>' + r.t + '</small></div><div>' + r.k + ' kcal'
       + '<button class="fdel" data-rid="' + r.id + '">✕</button></div></div>';
-    (r.items || []).forEach(function (x) {
+    (r.items || []).forEach(function (x, ix) {
       h += '<div class="fdi"><span>' + esc(x.n) + '</span><span>' + x.w + ' g</span>'
-        + '<span>' + x.k + ' kcal</span></div>';
+        + '<span>' + x.k + ' kcal</span>'
+        + '<button class="feditb" data-e="' + r.id + '|' + ix + '">改</button></div>'
+        + '<div class="fdm">蛋白 ' + x.p + 'g · 碳水 ' + x.c + 'g · 脂肪 ' + x.f + 'g</div>';
     });
     h += '</div>';
   });
@@ -1298,15 +1320,58 @@ function fdetail(meal) {
   $("fdBody").innerHTML = h;
   $("scrim").classList.add("on");
   $("fDetailSheet").classList.add("on");
-  var dels = $("fdBody").querySelectorAll("[data-rid]");
-  for (var i = 0; i < dels.length; i++) {
-    dels[i].onclick = function () {
+  bindDetail(meal, vd);
+}
+function bindDetail(meal, vd) {
+  var body = $("fdBody");
+  var ds = body.querySelectorAll("[data-rid]");
+  for (var i = 0; i < ds.length; i++) {
+    ds[i].onclick = function () {
       var id = this.getAttribute("data-rid");
-      var arr = FS.logs[vd] || [];
-      FS.logs[vd] = arr.filter(function (r) { return String(r.id) !== id; });
+      FS.logs[vd] = (FS.logs[vd] || []).filter(function (r) { return String(r.id) !== id; });
       fsave(); fdetail(meal); frender();
     };
   }
+  var es = body.querySelectorAll("[data-e]");
+  for (var k = 0; k < es.length; k++) {
+    es[k].onclick = function () {
+      var p = this.getAttribute("data-e").split("|");
+      fedit(meal, +p[0], +p[1], vd);
+    };
+  }
+}
+function fedit(meal, rid, idx, vd) {
+  var rec = (FS.logs[vd] || []).filter(function (r) { return r.id === rid; })[0];
+  if (!rec || !rec.items[idx]) return;
+  var it = rec.items[idx], per = fper100(it);
+  var row = function (id, label, val, step) {
+    return '<div class="ferow"><input id="' + id + '" type="number" step="' + step + '" value="' + val + '">'
+      + '<span>' + label + '</span></div>';
+  };
+  $("fdBody").innerHTML = '<div class="fen">' + esc(it.n) + '</div>'
+    + '<div class="feh">每 100 克</div>'
+    + row("feK", "kcal", per[0], 1) + row("feP", "蛋白 g", per[1], 0.1)
+    + row("feC", "碳水 g", per[2], 0.1) + row("feF", "脂肪 g", per[3], 0.1)
+    + '<div class="feh">这一份</div>' + row("feW", "g", it.w, 1)
+    + '<div class="fehint">改完会记住这个食物，下次识别直接用你填的数值</div>'
+    + '<button class="mbtn" id="feSave" style="width:calc(100% - 40px);margin:14px 20px 0">保存</button>'
+    + '<button class="mbtn ghost" id="feCancel" style="width:calc(100% - 40px);margin:10px 20px 0">取消</button>';
+  $("feCancel").onclick = function () { fdetail(meal); };
+  $("feSave").onclick = function () {
+    var k = +$("feK").value || 0, p = +$("feP").value || 0,
+        cc = +$("feC").value || 0, f = +$("feF").value || 0,
+        w = Math.max(0, +$("feW").value || 0);
+    FS.over = FS.over || {};
+    FS.over[fnorm(it.n)] = [k, p, cc, f];
+    it.w = w;
+    it.k = Math.round(k * w / 100);
+    it.p = +(p * w / 100).toFixed(1);
+    it.c = +(cc * w / 100).toFixed(1);
+    it.f = +(f * w / 100).toFixed(1);
+    var t = fsum(rec.items);
+    rec.k = t.k; rec.p = t.p; rec.c = t.c; rec.f = t.f;
+    fsave(); fdetail(meal); frender();
+  };
 }
 (function () {
   var fb = document.getElementById("fBody");
