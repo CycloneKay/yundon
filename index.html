@@ -231,7 +231,9 @@ body{
 .fhead .back svg{width:24px;height:24px;fill:currentColor}
 .fhead .back:active{background:rgba(255,255,255,.16)}
 .fhead .t{flex:1;min-width:0;font-size:19px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.fbody{flex:1;overflow:auto;padding:12px 12px 100px;overscroll-behavior:contain}
+.fbody{flex:1;overflow:auto;padding:12px 12px 100px;overscroll-behavior:contain;
+  scrollbar-width:none;scrollbar-color:transparent transparent}
+.fbody::-webkit-scrollbar{display:none!important;width:0!important}
 .fcard{background:var(--surface);border-radius:var(--r-l);padding:16px;box-shadow:var(--e1);margin-bottom:12px}
 .fcard h4{margin:0 0 12px;font-size:14px;font-weight:600;color:var(--on-surface-variant)}
 .fkcal{display:flex;align-items:baseline;gap:6px}
@@ -317,13 +319,18 @@ body{
 
 ::-webkit-scrollbar{display:none!important;width:0!important;height:0!important}
 html,body{scrollbar-width:none!important}
+/* 全站关掉标准滚动条（WebView 只认这条，::-webkit-scrollbar 会被忽略） */
+*{scrollbar-width:none;scrollbar-color:transparent transparent}
 
 /* ---- 根节点不滚动，内容放进 main.pad 自己滚（彻底去掉根滚动条） ---- */
 html,body{height:100%;overflow:hidden!important}
 .appbar{position:fixed!important;top:calc(6px + env(safe-area-inset-top));left:14px;right:14px;margin:0!important;z-index:30}
 main.pad{position:fixed;left:0;right:0;bottom:0;top:88px;overflow-y:auto;overflow-x:hidden;
   -webkit-overflow-scrolling:touch;padding:0 14px calc(120px + env(safe-area-inset-bottom))!important;
-  scrollbar-width:none;-ms-overflow-style:none}
+  scrollbar-width:none;-ms-overflow-style:none;
+  /* Android WebView 会无视 ::-webkit-scrollbar:display:none，在左边留一条灰色滑杆；
+     只有同时把标准属性 scrollbar-color 设成透明，那条灰条才真正消失 */
+  scrollbar-color:transparent transparent}
 main.pad::-webkit-scrollbar{display:none!important;width:0!important}
 /* ---- 饮食页：日期条 / 餐次详情 ---- */
 
