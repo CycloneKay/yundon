@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- 顶部：与页面渐变起点同色 -->
-    <color name="appBarBg">#FFEEF4FB</color>
-    <!-- 底部：与页面渐变终点同色 -->
-    <color name="appNavBg">#FFDFE9F5</color>
+    <!-- 与网页 body 底色完全一致，避免状态栏/导航栏出现白框 -->
+    <color name="appBarBg">#FFE7EFF9</color>
+    <color name="appNavBg">#FFE7EFF9</color>
 </resources>
