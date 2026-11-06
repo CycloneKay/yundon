@@ -89,6 +89,29 @@ jobs:
           PY
           cat "$MAIN"
 
+      - name: 写死 debug 签名（AGP 默认路径可能不是我们放的 keystore）
+        run: |
+          cat >> android/app/build.gradle <<'GRADLE'
+
+          // ---- 固定 debug 签名，避免每次构建证书不同 ----
+          android {
+              signingConfigs {
+                  debug {
+                      storeFile file(System.getenv("HOME") + "/.android/debug.keystore")
+                      storePassword "android"
+                      keyAlias "androiddebugkey"
+                      keyPassword "android"
+                  }
+              }
+              buildTypes {
+                  debug {
+                      signingConfig signingConfigs.debug
+                  }
+              }
+          }
+          GRADLE
+          tail -20 android/app/build.gradle
+
       - name: 同步网页资源
         run: npx cap sync
 
@@ -98,6 +121,15 @@ jobs:
           chmod +x gradlew
           ./gradlew assembleDebug --no-daemon --stacktrace
 
+      - name: 打印 APK 实际签名证书
+        run: |
+          APK=$(ls android/app/build/outputs/apk/debug/*.apk | head -1)
+          unzip -p "$APK" META-INF/*.RSA > /tmp/cert.rsa 2>/dev/null || true
+          if [ -s /tmp/cert.rsa ]; then
+            keytool -printcert -file /tmp/cert.rsa | grep -i "SHA256:" | head -1
+          else
+            echo "没有 v1 签名证书，看下面的 apksigner 输出"
+          fi
       - name: 核对 APK 里打进去的图标
         run: |
           APK=$(ls android/app/build/outputs/apk/debug/*.apk | head -1)
