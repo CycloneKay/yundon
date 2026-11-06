@@ -317,6 +317,14 @@ body{
 
 ::-webkit-scrollbar{display:none!important;width:0!important;height:0!important}
 html,body{scrollbar-width:none!important}
+
+/* ---- 根节点不滚动，内容放进 main.pad 自己滚（彻底去掉根滚动条） ---- */
+html,body{height:100%;overflow:hidden!important}
+.appbar{position:fixed!important;top:calc(6px + env(safe-area-inset-top));left:14px;right:14px;margin:0!important;z-index:30}
+main.pad{position:fixed;left:0;right:0;bottom:0;top:88px;overflow-y:auto;overflow-x:hidden;
+  -webkit-overflow-scrolling:touch;padding:0 14px calc(120px + env(safe-area-inset-bottom))!important;
+  scrollbar-width:none;-ms-overflow-style:none}
+main.pad::-webkit-scrollbar{display:none!important;width:0!important}
 /* ---- 饮食页：日期条 / 餐次详情 ---- */
 
 
@@ -1417,6 +1425,25 @@ function fedit(meal, rid, idx, vd) {
     $("scrim").classList.remove("on");
     $("fDetailSheet").classList.remove("on");
   };
+})();
+
+
+/* 把进度条塞进滚动容器，并把 scrollTo 重定向到它 */
+(function(){
+  var pad=document.querySelector('main.pad'), pw=document.querySelector('.progwrap'), ap=document.querySelector('.appbar');
+  if(!pad||!pw||!ap) return;
+  if(!pad.__moved){ pad.insertBefore(pw, pad.firstChild); pad.__moved=1; }
+  function sync(){ pad.style.top = Math.round(ap.getBoundingClientRect().bottom + 8) + 'px'; }
+  sync(); window.addEventListener('resize', sync); setTimeout(sync, 300);
+  var _st = window.scrollTo.bind(window);
+  window.scrollTo = function(o){
+    try{ if(o && typeof o === 'object' && (o.top === 0 || o.top === undefined)){ pad.scrollTop = 0; return; } }catch(e){}
+    _st(o);
+  };
+  document.addEventListener('click', function(e){
+    var row = e.target.closest && e.target.closest('.erow');
+    if(row){ /* 保留原逻辑 */ }
+  }, true);
 })();
 
 document.getElementById("btnFood").onclick = fopen;
