@@ -314,6 +314,14 @@ body{
 .snack.on{opacity:1;transform:translateY(0)}
 
 /* ---- 饮食页：日期条 / 餐次详情 ---- */
+/* ---- 隐藏滚动条 ---- */
+::-webkit-scrollbar{width:0!important;height:0!important}
+html,body{scrollbar-width:none;-ms-overflow-style:none}
+.fbody,#app,.sheet{scrollbar-width:none}
+/* ---- 顶部不再额外留白（edge 补丁没生效时避免出现色带） ---- */
+body{padding-top:0!important}
+.fview{padding-top:0!important}
+
 .fab{bottom:calc(116px + max(env(safe-area-inset-bottom),20px))!important}
 .fbody{padding-bottom:calc(280px + max(env(safe-area-inset-bottom),20px))!important}
 #fDetailSheet{max-height:80vh}
