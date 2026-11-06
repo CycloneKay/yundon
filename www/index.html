@@ -582,19 +582,19 @@ body.switching .tabbar,body.switching .appbar,body.switching .fhead{
   -webkit-backdrop-filter:blur(30px) saturate(180%);backdrop-filter:blur(30px) saturate(180%)}
 
 /* ================= 改动作 ================= */
-.ebtn{position:absolute;right:58px;top:50%;transform:translateY(-50%);
+.ebtn{position:absolute;right:56px;top:50%;transform:translateY(-50%);
   width:22px;height:22px;border-radius:50%;padding:0;margin:0;
   border:1px solid rgba(255,255,255,.92);background:rgba(255,255,255,.62);
   box-shadow:0 4px 12px rgba(23,43,77,.10),inset 0 1px 0 #fff;
   display:flex;align-items:center;justify-content:center;color:rgba(31,58,95,.75)}
 .ebtn svg{width:12px;height:12px;fill:currentColor;display:block}
 .ebtn:active{background:rgba(255,255,255,.95)}
-.rows{padding:0 12px 14px}
-.erow .body{padding-right:82px}
-.tbtn{right:32px;width:22px;height:22px}
+.rows{padding:0 11px 14px}
+.erow .body{padding-right:80px}
+.tbtn{right:30px;width:22px;height:22px}
 .tbtn::after{font-size:11px}
-.dbtn{width:30px;height:30px}
-
+.dbtn{width:28px;height:28px}
+.meta span{white-space:nowrap;display:inline-block}
 .exform{padding:2px 20px 4px}
 .exf{display:block;margin:0 0 10px}
 .exf>span{display:block;font-size:11.5px;color:var(--ink2);margin:0 0 5px 2px;letter-spacing:.2px}
@@ -1795,7 +1795,7 @@ function render(){
           +(it[2]?'<span class="tag">可跳过</span>':'')
           +(it.cust?'<span class="tag tag-add">自定</span>':'')+'</div>'
           +'<div class="meta"><span class="w">'+esc(wt)+'</span> · '+esc(st)+' × '
-          +esc(it[5]).replace(/\n/g," / ")+' · 休息 '+esc(it[6])+'</div>'
+          +esc(it[5]).replace(/\n/g," / ")+'<span class="nwr"> · 休息 '+esc(it[6])+'</span></div>'
           +(String(it[7]||"").trim()?'<button class="tbtn">要点'+CHEV+'</button>':'')
           +'<button class="ebtn" data-edit="'+ref+'" aria-label="改这个动作">'          +'<svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.8 9.94l-3.75-3.75L3 17.25zM20.7 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg></button>'
           +'<button class="dbtn" data-demo="'+ref+'" aria-label="看示范"></button>'
