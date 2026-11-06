@@ -315,7 +315,7 @@ body{
 
 /* ---- 饮食页：日期条 / 餐次详情 ---- */
 .fab{bottom:calc(116px + max(env(safe-area-inset-bottom),20px))!important}
-.fbody{padding-bottom:calc(220px + max(env(safe-area-inset-bottom),20px))!important}
+.fbody{padding-bottom:calc(280px + max(env(safe-area-inset-bottom),20px))!important}
 #fDetailSheet{max-height:80vh}
 
 .fdatebar{display:flex;align-items:center;gap:8px;margin:-4px 0 12px;position:relative}
@@ -684,6 +684,17 @@ body.switching .tabbar,body.switching .appbar,body.switching .fhead{
   <div class="mstep" id="fdBody"></div>
   <button class="mbtn ghost" id="fdClose" style="margin:10px 20px 0;width:calc(100% - 40px)">收起</button>
 </div>
+<div class="sheet" id="sheetBak">
+  <div class="grab"></div>
+  <h3>备份</h3>
+  <div class="hint">长按下面文字全选，复制后存到备忘录或微信文件传输助手</div>
+  <textarea id="bakText" class="minput" readonly
+    style="margin:0 16px;width:calc(100% - 32px);height:200px;font-size:11px;line-height:1.5"></textarea>
+  <div style="display:flex;gap:10px;padding:12px 16px 0">
+    <button class="mbtn ghost" id="bakCopy" style="width:50%;margin:0">复制</button>
+    <button class="mbtn" id="bakClose" style="width:50%;margin:0">关闭</button>
+  </div>
+</div>
 <div class="snack" id="snack"></div>
 <input type="file" id="fileIn" accept=".json,application/json" style="display:none">
 
@@ -839,7 +850,7 @@ var FALIAS = {
   "红薯": "甘薯（红心）［山芋、红薯］", "地瓜": "甘薯（红心）［山芋、红薯］",
   "米饭": "米饭（蒸，代表值）", "白米饭": "米饭（蒸，代表值）",
   "馒头": "馒头（代表值）", "面条": "面条（富强粉，煮）", "挂面": "面条（富强粉，煮）",
-  "牛肉": "牛肉（代表值，fat9g）", "猪肉": "猪肉（代表值，fat30g）",
+  "牛肉": "牛肉（代表值，瘦，fat3g）", "猪肉": "猪肉（代表值，瘦，fat3g）", "猪肉末": "猪肉（代表值，瘦，fat3g）", "里脊": "猪肉（里脊）",
   "西兰花": "西兰花［绿菜花］", "豆腐": "豆腐（代表值）",
   "苹果": "苹果（代表值）", "香蕉": "香蕉［甘蕉］", "酸奶": "酸奶（代表值，全脂）"
 };
@@ -890,9 +901,12 @@ function fmatch(q) {
   if (idx[k]) return idx[k];
   // 包含关系：只接受「限定词」级别的多余字符
   var best = null, bestLen = 1e9;
+  var DISH = /炒|烧|拌|卤|炖|焖|炸|煎|烤|汤|羹|煲|罐头|馅|饼|包|丸|酱/;
   for (var key in idx) {
     if (key.length < 2) continue;
     if (key.indexOf(k) >= 0 && key !== k) {
+      // 查的是单一食材时，别匹配到「青椒炒肉」这类菜名
+      if (k.length <= 3 && DISH.test(key.replace(k, ""))) continue;
       if (fokExtra(key.replace(k, "")) && key.length < bestLen) { bestLen = key.length; best = idx[key]; }
     }
   }
@@ -977,7 +991,7 @@ function fcall(messages, maxTokens) {
 
 var F_SYS = [
   "你是食物识别模块。只负责看图或看描述，拆出菜品和组成，并估算可食用重量；营养值一律由本地食物成分表计算，你绝对不要输出热量、蛋白质、碳水或脂肪的数字。",
-  "一级是用户认知里的完整菜品；画面里有多个独立菜品要分别列出，不要合并。同一食物只计一次重量。",
+  "一级是用户认知里的完整菜品。画面里不同的菜必须各自独立成 dish，绝不能把两个不相干的东西（比如一个主食和一个罐头）塞进同一个 dish；看不准时宁可拆成两个简单 dish。同一食物只计一次重量。",
   "每个组成给 query：用《中国食物成分表》里的标准食物名，带上生熟与做法（例如 米饭（蒸）、鸡胸脯肉、纯牛奶）。看不清做法时用能确认的上位名称。",
   "重量是当前状态的可食用克重，排除骨头、餐具。没有明确依据时给出 min_g / max_g 区间。",
   "只输出紧凑单行 JSON，不要 Markdown、不要解释。结构：",
@@ -1062,9 +1076,9 @@ function frender() {
   }
   h += '<section class="fcard"><h4>近 7 天（kcal）</h4><div style="display:flex;gap:6px;align-items:flex-end;height:64px">';
   days.forEach(function (x) {
-    var hp = x.k ? Math.max(6, Math.round(x.k * 56 / maxK)) : 3;
+    var hp = x.k ? Math.max(8, Math.round(x.k * 56 / maxK)) : 4;
     h += '<div style="flex:1;text-align:center;cursor:pointer" data-d="' + x.ds + '"><div style="height:' + hp + 'px;background:'
-      + (x.ds === vd ? 'var(--primary)' : 'var(--primary-container)')
+      + (x.ds === vd ? 'var(--primary)' : (x.k ? 'var(--primary-container)' : 'rgba(31,58,95,.18)'))
       + ';border-radius:4px 4px 0 0"></div>'
       + '<div style="font-size:10px;color:var(--on-surface-variant);margin-top:4px">'
       + (x.d.getMonth() + 1) + '/' + x.d.getDate() + '</div></div>';
@@ -1320,6 +1334,7 @@ function fdetail(meal) {
   $("fdBody").innerHTML = h;
   $("scrim").classList.add("on");
   $("fDetailSheet").classList.add("on");
+  $("fDetailSheet").scrollTop = 0;
   bindDetail(meal, vd);
 }
 function bindDetail(meal, vd) {
@@ -1524,14 +1539,19 @@ $("miTop").onclick=function(){closeSheets();window.scrollTo({top:0,behavior:"smo
 $("miBackup").onclick=function(){
   closeSheets();
   try{
-    var blob=new Blob([JSON.stringify(S)],{type:"application/json"});
-    var a=document.createElement("a");
-    a.href=URL.createObjectURL(blob);
-    a.download="训练记录备份_"+new Date().toISOString().slice(0,10)+".json";
-    document.body.appendChild(a);a.click();
-    setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},1500);
-    snack("已生成备份文件。若无反应，请用微信发给自己再保存");
+    var payload={v:2,at:new Date().toISOString(),s:S,f:FS};
+    $("bakText").value=JSON.stringify(payload);
+    scrim.classList.add("on");
+    $("sheetBak").classList.add("on");
   }catch(err){snack("导出失败：" + err.message);}
+};
+$("bakClose").onclick=function(){scrim.classList.remove("on");$("sheetBak").classList.remove("on");};
+$("bakCopy").onclick=function(){
+  var t=$("bakText");t.focus();t.select();
+  var done=false;
+  try{ done=document.execCommand("copy"); }catch(e){}
+  if(!done && navigator.clipboard){ navigator.clipboard.writeText(t.value).then(function(){snack("已复制");}); return; }
+  snack(done?"已复制":"请长按文字手动复制");
 };
 $("miRestore").onclick=function(){closeSheets();$("fileIn").click();};
 $("miReset").onclick=function(){
@@ -1545,8 +1565,11 @@ $("fileIn").onchange=function(e){
   fr.onload=function(){
     try{
       var o=JSON.parse(fr.result);
-      if(!o||typeof o.ck!=="object")throw new Error("格式不对");
-      S={week:o.week||1,ck:o.ck};save();render();snack("恢复成功");
+      if(o&&o.s)S=o.s;
+      else if(!o||typeof o.ck!=="object")throw new Error("格式不对");
+      else S={week:o.week||1,ck:o.ck};
+      if(o&&o.f){FS=o.f;fsave();}
+      save();render();if(typeof frender==="function")frender();snack("恢复成功");
     }catch(err){snack("恢复失败：" + err.message);}
   };
   fr.readAsText(f);e.target.value="";
