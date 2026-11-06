@@ -366,7 +366,8 @@ main.pad::-webkit-scrollbar{display:none!important;width:0!important}
 
 /* ================= 液态玻璃主题（覆盖层） ================= */
 :root{--ink:#16233A;--ink2:#5D6E88;--glass-hi:rgba(255,255,255,.82);--glass-lo:rgba(255,255,255,.48)}
-body{background:#E7EFF9;color:var(--ink);min-height:100vh;
+/* body 必须透明，否则不透明的底色会把 .bgwrap 的极光渐变整块盖掉（状态栏/导航栏露出来就成了一条白框） */
+body{background:transparent;color:var(--ink);min-height:100vh;
   padding-top:max(env(safe-area-inset-top),34px);
   padding-bottom:max(env(safe-area-inset-bottom),20px)}
 html{background:#E7EFF9}
