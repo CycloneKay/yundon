@@ -81,7 +81,7 @@ jobs:
                      "    @Override\n"
                      "    public void onCreate(Bundle savedInstanceState) {\n"
                      "        super.onCreate(savedInstanceState);\n"
-                     "        WindowCompat.setDecorFitsSystemWindows(getWindow(), false); try { getBridge().getWebView().setVerticalScrollBarEnabled(false); getBridge().getWebView().setHorizontalScrollBarEnabled(false); } catch (Exception e) {}\n"
+                     "        WindowCompat.setDecorFitsSystemWindows(getWindow(), false); getWindow().getDecorView().post(new Runnable() { public void run() { try { getBridge().getWebView().setVerticalScrollBarEnabled(false); getBridge().getWebView().setScrollbarFadingEnabled(true); } catch (Exception e) {} } });\n"
                      "    }\n"
                      "}", s)
           open(p, "w").write(s)
